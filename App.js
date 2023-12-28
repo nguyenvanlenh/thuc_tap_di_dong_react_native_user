@@ -102,7 +102,9 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator
+        // initialRouteName="QRCode"
+        >
           <Stack.Screen
             name="Main"
             component={MainContainer}
@@ -158,6 +160,7 @@ function App() {
               headerTintColor: "white",
             }}
           />
+
 
           <Stack.Screen
             name="OrderConfirm"
