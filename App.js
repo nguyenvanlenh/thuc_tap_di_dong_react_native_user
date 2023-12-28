@@ -30,6 +30,8 @@ import HistoryViewProduct from "./pages/HistoryViewProduct";
 import { AppState } from "react-native";
 
 import { addHistory } from "./redux/slices/HistoryView";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 function App() {
   const Stack = createNativeStackNavigator();
@@ -228,7 +230,14 @@ function App() {
               },
               headerTintColor: 'white',
             }} />
-
+          <Stack.Screen name="Login" component={Login}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="Register" component={Register}
+            options={{
+              headerShown: false,
+            }} />
 
         </Stack.Navigator>
       </NavigationContainer>
