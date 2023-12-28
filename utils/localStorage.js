@@ -47,7 +47,7 @@ export const saveHistoryViewToAsyncStorage = async (data) => {
     try {
         const jsonHistoryData = JSON.stringify(data);
         await AsyncStorage.setItem("historyViewProduct", jsonHistoryData);
-    
+
     } catch (error) {
         console.error("Lỗi khi lưu giỏ hàng:", error);
     }
@@ -61,3 +61,23 @@ export const getHistoryFromAsyncStorage = async () => {
         return null;
     }
 };
+
+export const savePermissionToAsyncStorage = async (key, data) => {
+    try {
+        const jsonData = JSON.stringify(data);
+        await AsyncStorage.setItem(key, jsonData);
+
+    } catch (error) {
+        console.error("Lỗi lưu quyền:", error);
+    }
+}
+export const getPermissionToAsyncStorage = async (key) => {
+    try {
+        const jsonData =
+            await AsyncStorage.getItem(key);
+        return jsonData ? JSON.parse(jsonData) : null;
+
+    } catch (error) {
+        console.error("Lỗi lấy quyền:", error);
+    }
+}

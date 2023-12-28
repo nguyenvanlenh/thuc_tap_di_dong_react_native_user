@@ -7,10 +7,13 @@ import HomeScreen from './screens/HomeScreen';
 import CategoryScreen from './screens/CategoryScreen';
 import MessageScreen from './screens/MessageScreen';
 import AccountScreen from './screens/AccountScreen';
+import { QrCode } from './screens/QrCode';
+
 
 //Screen names
 const homeName = "Trang chủ";
 const categoryName = "Danh mục";
+const scaner = "Quét";
 const messageName = "Tin mới";
 const accountName = "Tài khoản";
 
@@ -18,42 +21,47 @@ const Tab = createBottomTabNavigator();
 
 function MainContainer() {
   return (
-      <Tab.Navigator
-        initialRouteName={homeName}
-        screenOptions={({ route }) => ({
-          tabBarIcon: ({ focused, color, size }) => {
-            let iconName;
-            let rn = route.name;
+    <Tab.Navigator
+      initialRouteName={homeName}
+      screenOptions={({ route }) => ({
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+          let rn = route.name;
 
-            if (rn === homeName) {
-              iconName = focused ? 'home' : 'home-outline';
+          if (rn === homeName) {
+            iconName = focused ? 'home' : 'home-outline';
 
-            } else if (rn === categoryName) {
-              iconName = focused ? 'grid' : 'grid-outline';
+          } else if (rn === categoryName) {
+            iconName = focused ? 'grid' : 'grid-outline';
 
-            } else if (rn === messageName) {
-              iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
+          } else if (rn === scaner) {
+            iconName = focused ? 'qr-code-outline' : 'qr-code-outline';
 
-            } else if (rn === accountName) {
-              iconName = focused ? 'happy' : 'happy-outline';
-            }
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          headerShown: false ,
-          tabBarLabelStyle: {
-            paddingBottom: 6, 
-            fontSize: 10,
-          },
-          tabBarStyle: {
-            padding: 4
+          } else if (rn === messageName) {
+            iconName = focused ? 'chatbox-ellipses' : 'chatbox-ellipses-outline';
           }
-        })}
-        >
-        <Tab.Screen name={homeName} component={HomeScreen} />
-        <Tab.Screen name={categoryName} component={CategoryScreen} />
-        <Tab.Screen name={messageName} component={MessageScreen} />
-        <Tab.Screen name={accountName} component={AccountScreen} />
-      </Tab.Navigator>
+          else if (rn === accountName) {
+            iconName = focused ? 'happy' : 'happy-outline';
+          }
+          return <Ionicons name={iconName} size={size} color={color} />;
+
+        },
+        headerShown: false,
+        tabBarLabelStyle: {
+          paddingBottom: 6,
+          fontSize: 10,
+        },
+        tabBarStyle: {
+          padding: 4
+        }
+      })}
+    >
+      <Tab.Screen name={homeName} component={HomeScreen} />
+      <Tab.Screen name={categoryName} component={CategoryScreen} />
+      <Tab.Screen name={scaner} component={QrCode} />
+      <Tab.Screen name={messageName} component={MessageScreen} />
+      <Tab.Screen name={accountName} component={AccountScreen} />
+    </Tab.Navigator>
   );
 }
 

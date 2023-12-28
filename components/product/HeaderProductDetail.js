@@ -10,10 +10,11 @@ import {
 import { colors } from "../../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
+import QRCode from 'react-native-qrcode-svg';
 
-export const HeaderProductDetail = ({ navigation }) => {
+export const HeaderProductDetail = ({ navigation, id }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-
+  // alert(id)
   const handleViewOver = () => {
     // Show the modal for sharing
     setIsModalVisible(true);
@@ -99,12 +100,11 @@ export const HeaderProductDetail = ({ navigation }) => {
 
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>QR Code</Text>
-            <Image
-              source={{
-                uri: "https://cdn.printgo.vn/uploads/media/790919/tao-ma-qr-code-san-pham-1_1620927223.jpg",
-              }}
-              style={styles.modalImage}
-              resizeMode="contain"
+            <QRCode
+              value={`${id}`}
+              size={200}
+              color="black"
+              backgroundColor="white"
             />
           </View>
         </View>
@@ -140,7 +140,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalContainer: {
-    margin: "auto",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginHorizontal: 40,
+    marginVertical: 150,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,

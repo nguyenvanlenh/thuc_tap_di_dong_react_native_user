@@ -6,7 +6,7 @@ import {
   View,
   ScrollView,
   ActivityIndicator,
- 
+
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ import { addCart, updateCart } from "../redux/slices/CartsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import uuidv4 from "uuid/v4";
-import {addOrderProduct, removeAllOrderProduct} from "../redux/slices/OrderProductSlice";
+import { addOrderProduct, removeAllOrderProduct } from "../redux/slices/OrderProductSlice";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { addHistory } from "../redux/slices/HistoryView";
 export const ProducDetail = ({ navigation }) => {
@@ -123,10 +123,6 @@ export const ProducDetail = ({ navigation }) => {
     setQuantity(existingCartItem ? existingCartItem.quantity + 1 : 1);
     setIdV4(existingCartItem && existingCartItem.idv4);
   }, [carts]);
-
-    
-   
- 
   const link =
     "http://tmt020202ccna-001-site1.atempurl.com/api/products/infor-product?id=" +
     productId;
@@ -169,12 +165,12 @@ export const ProducDetail = ({ navigation }) => {
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     { useNativeDriver: false } // Make sure to set useNativeDriver to false
   );
-// Lấy dữ liệu từ AsyncStorage khi component được mount
+  // Lấy dữ liệu từ AsyncStorage khi component được mount
   const getDataFromStorage = async () => {
     try {
       // Lấy dữ liệu từ AsyncStorage
-   
-      console.log( "H" +storedProducts)
+
+      console.log("H" + storedProducts)
       // Nếu có dữ liệu, cập nhật state
       if (storedProducts !== null) {
         setViewedProducts(JSON.parse(storedProducts));
@@ -196,7 +192,7 @@ export const ProducDetail = ({ navigation }) => {
         const data = await response.json();
 
         console.log(data)
-       
+
         setProductData(data.data);
         addToHistoryView(data.data)
       } catch (error) {
@@ -205,11 +201,11 @@ export const ProducDetail = ({ navigation }) => {
     };
 
     fetchData();
-   
+
   }, []);
   const addToHistoryView = (productData) => {
     const existingHistoryItem = history.find((item) => {
-      return item.id === productId ;
+      return item.id === productId;
     })
     const newCartItem = {
       id: productData.id_product,
@@ -222,10 +218,10 @@ export const ProducDetail = ({ navigation }) => {
       path_img: productData ? productData.list_image[0].path_image : "",
     };
     if (!existingHistoryItem) {
-     
+
       // Nếu sản phẩm đã tồn tại trong giỏ hàng, thì cập nhật
       dispatch(addHistory(newCartItem));
-    } 
+    }
   };
   const handleAddToCart = () => {
     const newCartItem = {
@@ -309,7 +305,7 @@ export const ProducDetail = ({ navigation }) => {
           { backgroundColor: headerBackgroundColor },
         ]}
       >
-        <HeaderProductDetail navigation={navigation} />
+        <HeaderProductDetail navigation={navigation} id={productId} />
       </Animated.View>
       <ScrollView
         onScroll={handleScroll}
