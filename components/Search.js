@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text, Image, TextInput, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, Dimensions, FlatList } from 'react-native';
 
@@ -10,44 +10,44 @@ const Search = () => {
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
-        
-          const response = await fetch(
-            "http://tmt020202ccna-001-site1.atempurl.com/api/products/ds-san-pham?name="+
-            `${searchQuery}` +"&quantity=4" 
-             
-          );
-         
-          const jsonData = await response.json();
-         
-          // set data bằng dữ liệu lấy được
-          setData(jsonData.data || []);
+
+            const response = await fetch(
+                "http://tmt020202ccna-001-site1.atempurl.com/api/products/ds-san-pham?name=" +
+                `${searchQuery}` + "&quantity=4"
+
+            );
+
+            const jsonData = await response.json();
+
+            // set data bằng dữ liệu lấy được
+            setData(jsonData.data || []);
         } catch (error) {
-          console.error("Error fetching data:", error);
-        } 
-      };
-    
-     
-      const handleInputChange = (text) => {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+
+    const handleInputChange = (text) => {
         setSearchQuery(text);
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         // Gọi hàm tìm kiếm mỗi khi giá trị của input thay đổi
         fetchData()
-       
-      }, [searchQuery]);
+
+    }, [searchQuery]);
     const handleSearch = () => {
         // Thực hiện xử lý tìm kiếm và truyền dữ liệu đến trang tìm kiếm
         navigation.navigate('SearchResult', { query: searchQuery });
     };
     const renderProduct = ({ item }) => (
-        
+
         <Text onPress={() => onItemSelected(item)}>{item.name_product}</Text>
-      );
+    );
     return (
 
         <View style={styles.container}>
-          
+
             <View style={styles.headerSearch}>
                 <Ionicons style={styles.icon_back} name="arrow-back-outline" size={26} color={'#aaa'} onPress={() => navigation.goBack()} />
                 <TextInput
@@ -57,30 +57,32 @@ const Search = () => {
                     onChangeText={handleInputChange}
                     onSubmitEditing={handleSearch}
                 />
+                <Ionicons name="mic-outline" size={26} color={'#aaa'} onPress={() =>
+                    navigation.navigate('SpeechVoice')}></Ionicons>
             </View>
-            <View>{ searchQuery !== '' ? (data.map((item) => (
-            <TouchableOpacity
-              style={styles.productItem}
-              key={item.id_product}
-              onPress={() =>
-                navigation.navigate("SearchResult", {
-                  query: item.name_product,
-                })
-              }
-            >
-                
-              <Text style={styles.placeholder_search}><Ionicons  name="search-circle-outline" size={16} color={'#aaa'}  /> {item.name_product}</Text>
-              <Text style={styles.line}></Text>
-            </TouchableOpacity>
-          ))): <Text></Text>}</View>
-            
+            <View>{searchQuery !== '' ? (data.map((item) => (
+                <TouchableOpacity
+                    style={styles.productItem}
+                    key={item.id_product}
+                    onPress={() =>
+                        navigation.navigate("SearchResult", {
+                            query: item.name_product,
+                        })
+                    }
+                >
+
+                    <Text style={styles.placeholder_search}><Ionicons name="search-circle-outline" size={16} color={'#aaa'} /> {item.name_product}</Text>
+                    <Text style={styles.line}></Text>
+                </TouchableOpacity>
+            ))) : <Text></Text>}</View>
+
             <View style={styles.suggest1}>
                 <Text>Coupon Đến 150K</Text>
                 <Text style={styles.sale}>HÀNG HIỆU SALE 50%</Text>
             </View>
             <View style={styles.comp}>
                 <View style={styles.trending}>
-                    <Ionicons style={styles.icon_tren} name="trending-up-outline"  />
+                    <Ionicons style={styles.icon_tren} name="trending-up-outline" />
                     <Text style={styles.text_tren}>Tìm kiếm phổ biến</Text>
                 </View>
                 <View style={styles.list_tren}>
@@ -256,24 +258,25 @@ const styles = StyleSheet.create({
     comp: {
         backgroundColor: '#fff'
     },
-      searchTextInput: {
+    searchTextInput: {
         borderWidth: 0,
-        height: 36,
+        paddingVertical: 8,
         margin: 0,
         marginLeft: 8,
         // outlineWidth: 0, // Tương đương với outline: 0px;
-        width: '100%',
+        width: "80%",
         padding: 0,
-        fontWeight: '400', // Tương đương với font-weight: 400;
+        fontWeight: "400", // Tương đương với font-weight: 400;
         fontSize: 14,
-        lineHeight: 1.5, // Tương đương với line-height: 150%;
+        color: '#AAAAAA'
+
     },
-    placeholder_search:{
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      backgroundColor: '#fff'
+    placeholder_search: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: '#fff'
     },
-    line:{
+    line: {
         height: 1,
         backgroundColor: '#000'
     }
