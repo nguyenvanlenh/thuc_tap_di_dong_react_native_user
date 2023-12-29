@@ -51,7 +51,7 @@ const Search = () => {
             <View style={styles.headerSearch}>
                 <Ionicons style={styles.icon_back} name="arrow-back-outline" size={26} color={'#aaa'} onPress={() => navigation.goBack()} />
                 <TextInput
-                    placeholder="Giao nhanh 2H & đúng khung giờ"
+                    placeholder="Bạn muốn tìm gì!!"
                     style={styles.searchTextInput}
                     editable={true}
                     onChangeText={handleInputChange}
@@ -77,7 +77,7 @@ const Search = () => {
             ))) : <Text></Text>}</View>
 
             <View style={styles.suggest1}>
-                <Text>Coupon Đến 150K</Text>
+                <Text>Áo đội tuyển Việt Nam</Text>
                 <Text style={styles.sale}>HÀNG HIỆU SALE 50%</Text>
             </View>
             <View style={styles.comp}>
@@ -87,23 +87,23 @@ const Search = () => {
                 </View>
                 <View style={styles.list_tren}>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/4b11243d47b420d33f773d005be5b5ab.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Áo vãi mềm</Text>
                     </View>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/898f24b5580b36b234347da62a87d77b.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Áo thể thao chính hãng</Text>
                     </View>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/8f906c111b4f829902dc0e9dde16d492.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Bộ đồ bóng đá</Text>
                     </View>
                 </View>
             </View>
-            <View style={styles.catogary}>
+            {/* <View style={styles.catogary}>
                 <Text style={styles.title_catogary}>Danh mục nổi bật</Text>
                 <View style={styles.list_catogary}>
                     <View style={styles.item_catogary}>
@@ -132,7 +132,7 @@ const Search = () => {
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                 </View>
-            </View>
+            </View> */}
         </View>
 
     );
@@ -249,8 +249,9 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     headerSearch: {
-        paddingVertical: 10,
-        marginTop: 30,
+        alignItems: "center",
+        height: 60,
+        marginTop: 50,
         marginVertical: 0,
         flexDirection: 'row',
         backgroundColor: '#fff'
