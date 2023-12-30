@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text, Image, TextInput, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, Dimensions, FlatList } from 'react-native';
+import { API_GET_PATHS } from '../services/PathApi';
 
 const Search = () => {
     const navigation = useNavigation();
@@ -12,7 +13,7 @@ const Search = () => {
         try {
 
             const response = await fetch(
-                "http://tmt020202ccna-001-site1.atempurl.com/api/products/ds-san-pham?name=" +
+                API_GET_PATHS.tim_kiem_san_pham +
                 `${searchQuery}` + "&quantity=4"
 
             );

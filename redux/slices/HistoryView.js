@@ -15,7 +15,6 @@ const HistoryView = createSlice({
             const quantity = action.payload.quantity;
             const path_img = action.payload.path_img;
             const newProductItem = {
-                idv4: uuidv4(),
                 id: id,
                 title: title,
                 price: price,
@@ -29,10 +28,10 @@ const HistoryView = createSlice({
 
             state.push(newProductItem);
         },
-        
+
     },
 });
 
-export const { addHistory} =
+export const { addHistory } =
     HistoryView.actions;
 export default HistoryView.reducer;

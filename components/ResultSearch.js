@@ -5,9 +5,10 @@ import { View, Text, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, St
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Dimensions } from 'react-native';
-import { Button } from 'react-native';
 import Header from './home/Header';
 import { useState } from 'react';
+import { API_GET_PATHS } from '../services/PathApi';
+import { formatCurrency } from '../utils/Utils';
 const ResultSearch = ({ route }) => {
   // Lấy dữ liệu từ params
   const searchQuery = route.params?.query || 'Không có dữ liệu tìm kiếm';
@@ -15,13 +16,9 @@ const ResultSearch = ({ route }) => {
   // gọi api để lấy dữ liệu
   const fetchData = async () => {
     try {
-
       const response = await fetch(
-        "http://tmt020202ccna-001-site1.atempurl.com/api/products/ds-san-pham?name=" +
-        `${searchQuery}` + "&quantity=4"
-
+        API_GET_PATHS.tim_kiem_san_pham + `${searchQuery}`
       );
-
       const jsonData = await response.json();
       console.log("a " + jsonData)
       // set data bằng dữ liệu lấy được
@@ -36,40 +33,25 @@ const ResultSearch = ({ route }) => {
 
   }, [searchQuery]);
 
-  const handleButtonPress = () => {
-    // Xử lý khi nút được nhấn
-    Alert.alert('Button Pressed', 'Nút đã được nhấn!');
-  };
-
-  const handleScroll = ({ nativeEvent }) => {
-    const { layoutMeasurement, contentOffset, contentSize } = nativeEvent;
-    const isCloseToBottom =
-      layoutMeasurement.width + contentOffset.x >= contentSize.width - 20;
-
-    if (isCloseToBottom && !loading) {
-      fetchData();
-    }
-  };
-
   const navigation = useNavigation();
   return (
     <ScrollView>
       <View style={styles.container}>
         <Header></Header>
         <View style={styles.fillter}>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Phổ biến</Text>
           </TouchableOpacity>
           <Text style={styles.dot} >.</Text>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Bán chạy</Text>
           </TouchableOpacity>
           <Text style={styles.dot}>.</Text>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Mới nhất</Text>
           </TouchableOpacity>
           <Text style={styles.dot}>.</Text>
-          <TouchableOpacity style={styles.button} onPress={handleButtonPress}>
+          <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Giá</Text>
           </TouchableOpacity>
         </View>
@@ -103,15 +85,11 @@ const ResultSearch = ({ route }) => {
                 </Text>
               </View>
               <View style={styles.priceProductWrap}>
-                <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
               </View>
             </TouchableOpacity>
           ))}
         </View>
-
-
-
-
       </View>
     </ScrollView>
 
