@@ -5,6 +5,7 @@ import CategoryReducer from "./slices/CategorySlice";
 import paymentReducer from './slices/PaymentSlice'
 import orderProductReducer from "./slices/OrderProductSlice";
 import HistoryView from "./slices/HistoryView";
+import AuthReducer from './slices/AuthSlice';
 
 const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
         payment: paymentReducer,
         orderProducts: orderProductReducer,
         historys: HistoryView,
+        auth: AuthReducer,
     }
 })
 

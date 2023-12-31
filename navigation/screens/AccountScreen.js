@@ -1,4 +1,4 @@
-import { ScrollView, StatusBar, TextBase } from 'react-native';
+import { Button, ScrollView, StatusBar, TextBase } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react'; // Import useEffect từ react thay vì componentWillUnmount
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -6,8 +6,10 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../theme';
 import { WINDOW_HEIGHT } from '../../utils/Utils';
 import CartIcon from '../../components/CartIcon';
+import { useSelector } from 'react-redux';
 
 function AccountScreen() {
+  const auth = useSelector(state => state.auth)
   const navigation = useNavigation();
   const isFocused = useIsFocused(); // Sử dụng useIsFocused để kiểm tra màn hình này có đang được tập trung hay không
   useEffect(() => {
@@ -54,29 +56,39 @@ function AccountScreen() {
                 <Ionicons style={styles.iconPencil} name="pencil-outline" size={8} color="#fff" />
               </TouchableOpacity>
               <View style={styles.containerName}>
-                {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 18, fontWeight: 600 }}>Muleup Nguyen</Text>
-                  <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
-                </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Setting')}
-                  style={styles.addName}
-                >
-                  <Ionicons name="add-outline" size={14} color="#000" />
-                  <Text style={{ fontSize: 12 }}>Thêm nickname</Text>
-                </TouchableOpacity>
-                <Text style={{ marginTop: 12, padding: 4, backgroundColor: '#dcdcdc', borderRadius: 14, fontSize: 14, width: 90, textAlign: 'center' }}>Khách hàng</Text> */}
-                <View>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={{ fontSize: 16, fontWeight: 600 }}>Chào mừng bạn đến với Tiki</Text>
-                  </View>
-                  <TouchableOpacity
-                    onPress={() => navigation.navigate('Login')}
-                  >
-                    <Text style={styles.textLogin}>
-                      Đăng nhập/tạo tài khoản</Text>
-                  </TouchableOpacity>
-                </View>
+                {
+                  auth?.user ?
+                    (<>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 18, fontWeight: 600 }}>Muleup Nguyen</Text>
+                        <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('Setting')}
+                        style={styles.addName}
+                      >
+                        <Ionicons name="add-outline" size={14} color="#000" />
+                        <Text style={{ fontSize: 12 }}>Thêm nickname</Text>
+                      </TouchableOpacity>
+                      <Text style={{ marginTop: 12, padding: 4, backgroundColor: '#dcdcdc', borderRadius: 14, fontSize: 14, width: 90, textAlign: 'center' }}>Khách hàng</Text>
+                    </>
+                    ) :
+                    (
+                      <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={{ fontSize: 16, fontWeight: 600 }}>Chào mừng bạn đến với Tiki</Text>
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('Login')}
+                        >
+                          <Text style={styles.textLogin}>
+                            Đăng nhập/tạo tài khoản</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )
+                }
+
+
               </View>
             </View>
           </View>

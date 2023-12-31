@@ -1,21 +1,37 @@
-import { View, Text, Image, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native'
-import React, { useState } from 'react'
-import { StatusBar } from 'expo-status-bar'
+import { View, Text, Image, StyleSheet, Dimensions, TextInput, TouchableOpacity, Alert, BackHandler } from 'react-native'
+import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '../theme';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from '../firebaseConfig';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/slices/AuthSlice';
 const { width } = Dimensions.get('window');
 export default function Login() {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
+    const dispatch = useDispatch()
     const handleLogin = () => {
         // Xử lý logic đăng nhập ở đây
-        console.log('Đăng nhập với username:', username, 'và password:', password);
+        console.log('Đăng nhập với email:', email, 'và password:', password);
+        if (email !== "" && password !== "") {
+            signInWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    const serializedUser = {
+                        uid: user.uid,
+                        email: user.email
+                    };
+                    dispatch(setUser(serializedUser))
+                    navigation.navigate("Main")
+                })
+                .catch((err) => Alert.alert("Login error", err.message));
+        }
     };
 
     return (
         <View style={{ flex: 1 }}>
-            <StatusBar backgroundColor="#fff" barStyle="dark-content" />
             <View style={styles.containerImage} >
                 <View style={styles.backgroundImage} >
                     <Image style={styles.image} source={require('../assets/login-home.png')} />
@@ -28,9 +44,9 @@ export default function Login() {
                 <View style={styles.inputContainer}>
                     <TextInput
                         style={styles.input}
-                        placeholder="Tài khoản"
-                        value={username}
-                        onChangeText={setUsername}
+                        placeholder="Email"
+                        value={email}
+                        onChangeText={setEmail}
                     />
                 </View>
 
@@ -84,10 +100,6 @@ const styles = StyleSheet.create({
         bottom: 0,
         marginLeft: width / 2,
         backgroundColor: '#9DD6EB'
-    },
-    statusBar: {
-        height: StatusBar.currentHeight,
-        backgroundColor: '#fff',
     },
     container: {
         marginTop: 32,
