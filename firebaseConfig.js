@@ -5,8 +5,6 @@ import { getAuth, getReactNativePersistence, onAuthStateChanged } from "firebase
 import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
-import { setUser } from "./redux/slices/AuthSlice";
-import store from "./redux/store";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,23 +24,5 @@ const firebaseConfig = {
 // Initialize Firebase
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-// export const auth = getAuth(app, {
-//     persistence: getReactNativePersistence(ReactNativeAsyncStorage)
-// });
-
-// // Custom authentication module
-// export const useAuth = () => {
-
-//     const subscribeToAuthChanges = () => {
-//         return onAuthStateChanged(auth, async authenticatedUser => {
-//             store.dispatch(setUser(authenticatedUser));
-//         });
-//     };
-
-//     return {
-//         subscribeToAuthChanges,
-//     };
-// }
 export const db = getFirestore(app);
 export const database = getDatabase(app);
-// const analytics = getAnalytics(app);

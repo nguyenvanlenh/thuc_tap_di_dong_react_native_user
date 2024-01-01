@@ -3,18 +3,21 @@ import React, { useEffect, useRef, useState } from 'react'
 import { colors } from '../theme';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from '../firebaseConfig';
+import { auth, database } from '../firebaseConfig';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../redux/slices/AuthSlice';
+
+import { ref, set } from 'firebase/database';
+import { usePushNotifications } from '../usePushNotifications';
 const { width } = Dimensions.get('window');
 export default function Login() {
+    const { expoPushToken } = usePushNotifications();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
     const dispatch = useDispatch()
     const handleLogin = () => {
         // Xử lý logic đăng nhập ở đây
-        console.log('Đăng nhập với email:', email, 'và password:', password);
         if (email !== "" && password !== "") {
             signInWithEmailAndPassword(auth, email, password)
                 .then((userCredential) => {
@@ -23,7 +26,14 @@ export default function Login() {
                         uid: user.uid,
                         email: user.email
                     };
+                    const usersListRef = ref(database, `userTokens/${user.uid}/`);
+                    // var timestamp = createdAt.getTime();
+                    set(usersListRef, {
+                        token: 123,
+                        email: user.email,
+                    });
                     dispatch(setUser(serializedUser))
+                    // sendNotifications()
                     navigation.navigate("Main")
                 })
                 .catch((err) => Alert.alert("Login error", err.message));

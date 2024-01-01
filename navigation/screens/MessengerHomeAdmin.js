@@ -1,10 +1,8 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { database } from '../../firebaseConfig';
 import { onValue, ref } from 'firebase/database';
 import ItemMessage from '../../components/home/message/ItemMessage';
-import { useNavigation } from '@react-navigation/native';
-import { useSelector } from 'react-redux';
 
 const MessengerHomeAdmin = () => {
     const [users, setUsers] = useState([]);

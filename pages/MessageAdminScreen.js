@@ -1,24 +1,20 @@
 import React, {
     useState,
-    useEffect,
     useLayoutEffect,
     useCallback
 } from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import {
-    collection,
-    addDoc,
-    orderBy,
-    query,
-    onSnapshot
+    query
 } from 'firebase/firestore';
-import { signOut } from 'firebase/auth';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { auth, database, db } from '../firebaseConfig';
 import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../theme';
-import { onChildAdded, onValue, orderByChild, orderByValue, push, ref, set } from 'firebase/database';
+import { onValue, orderByChild, push, ref, set } from 'firebase/database';
+import { sendNotifications } from '../utils/Utils';
+
 function MessageAdminScreen() {
     const route = useRoute();
     const { id } = route.params; // Lấy giá trị của tham số 'id'
@@ -26,7 +22,7 @@ function MessageAdminScreen() {
     const navigation = useNavigation();
 
     const onSignOut = () => {
-        signOut(auth).catch(error => console.log('Error logging out: ', error));
+        navigation.goBack()
     };
 
     useLayoutEffect(() => {
@@ -75,14 +71,19 @@ function MessageAdminScreen() {
         const { _id, createdAt, text, user } = messages[0];
         const chatsListRef = ref(database, `conversations/${id}/chats/`);
         const newChatsRef = push(chatsListRef);
-        // var timestamp = createdAt.getTime();
-        // console.log("send:", _id, createdAt, text, user);
+
         set(newChatsRef, {
             _id,
             text,
             createdAt: createdAt + "",
             user
         });
+        const tokenUser = ref(database, 'userTokens/' + id);
+        onValue(tokenUser, (snapshot) => {
+            const data = snapshot.val();
+            sendNotifications("Tin nhắn mới", text, data?.token)
+        });
+
     }, []);
 
     return (

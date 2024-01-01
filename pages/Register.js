@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { colors } from '../theme';
 import { useNavigation } from '@react-navigation/native';
 import { auth, database } from '../firebaseConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { push, ref, set } from 'firebase/database';
 
 const { width } = Dimensions.get('window');
@@ -18,6 +18,7 @@ export default function Register() {
         // Xử lý logic đăng ký ở đây
         if (email !== '' && password !== '') {
             if (password === passwordPre) {
+
                 createUserWithEmailAndPassword(auth, email, password)
                     .then((userCredential) => {
                         const user = userCredential.user;
@@ -46,8 +47,7 @@ export default function Register() {
                 </View>
             </View>
             <View style={styles.container}>
-                <Text style={styles.greetingText}>Đăng kí,</Text>
-                <Text style={{ marginTop: 12, fontSize: 16 }}>Đăng kí tài khoản mới</Text>
+                <Text style={styles.greetingText}>Đăng kí</Text>
 
                 <View style={styles.inputContainer}>
                     <TextInput

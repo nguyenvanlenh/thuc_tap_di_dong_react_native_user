@@ -33,8 +33,6 @@ import { addHistory } from "./redux/slices/HistoryView";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MessageAdminScreen from "./pages/MessageAdminScreen";
-import MessengerHomeAdmin from "./navigation/screens/MessengerHomeAdmin";
-
 function App() {
   const Stack = createNativeStackNavigator();
 
