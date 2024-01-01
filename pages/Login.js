@@ -29,7 +29,7 @@ export default function Login() {
                     const usersListRef = ref(database, `userTokens/${user.uid}/`);
                     // var timestamp = createdAt.getTime();
                     set(usersListRef, {
-                        token: 123,
+                        token: expoPushToken?.data,
                         email: user.email,
                     });
                     dispatch(setUser(serializedUser))
