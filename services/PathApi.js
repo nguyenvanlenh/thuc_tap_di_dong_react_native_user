@@ -2,7 +2,9 @@
 export const BASE_URL = 'http://localhost:8080'
 
 export const API_GET_PATHS = {
-    lay_ds_giay_moi: `${BASE_URL}/api/product-shoes/ds-giay-moi?`,
+    lay_ds_ao: `${BASE_URL}/api/products/`,
+    lay_ds_ao_all: `${BASE_URL}/api/products`,
+
     lay_ds_giay_hot: `${BASE_URL}/api/product-shoes/ds-giay-hot?`,
     lay_ds_giay_khuyen_mai: `${BASE_URL}/api/product-shoes/ds-giay-khuyen_mai?`,
 

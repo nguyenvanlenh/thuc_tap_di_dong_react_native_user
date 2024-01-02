@@ -8,11 +8,9 @@ export default function ElementProduct({title, type}) {
     const navigation = useNavigation();
     const [activeButton, setActiveButton] = useState(1);
     const buttons = [
-        { id: 1, label: "Button 1" },
-        { id: 2, label: "Button 2" },
-        { id: 3, label: "Button 3" },
-        { id: 4, label: "Button 4" },
-        { id: 5, label: "Button 5" },
+        { id: 1, label: "NIKE" },
+        { id: 2, label: "ADIDAS" },
+        { id: 3, label: "PUMA" },
     ];
     const handlePress = (buttonId) => {
         setActiveButton(buttonId);
@@ -88,12 +86,12 @@ export default function ElementProduct({title, type}) {
                                     <Ionicons
                                         key={i}
                                         name={
-                                            i < item.star_review
+                                            i < 5
                                                 ? "star"
                                                 : "star-outline"
                                         }
                                         color={
-                                            i < item.star_review ? "gold" : "gray"
+                                            i < 5 ? "gold" : "gray"
                                         }
                                     />
                                 ))}

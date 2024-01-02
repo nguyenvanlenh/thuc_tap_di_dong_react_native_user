@@ -39,12 +39,12 @@ const SuggestedProduct = ({data}) =>{
                                 <Ionicons
                                     key={i}
                                     name={
-                                        i < item.star_review
+                                        i < 5
                                             ? "star"
                                             : "star-outline"
                                     }
                                     color={
-                                        i < item.star_review ? "gold" : "gray"
+                                        i < 5 ? "gold" : "gray"
                                     }
                                 />
                             ))}
