@@ -21,7 +21,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.watermelondev.App_Ban_Hang_User"
     },
     "web": {
       "favicon": "./assets/favicon.png"

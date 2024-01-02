@@ -11,11 +11,9 @@ const Search = () => {
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
-
             const response = await fetch(
                 API_GET_PATHS.tim_kiem_san_pham +
                 `${searchQuery}` + "&quantity=4"
-
             );
 
             const jsonData = await response.json();
@@ -252,7 +250,7 @@ const styles = StyleSheet.create({
     headerSearch: {
         alignItems: "center",
         height: 60,
-        marginTop: 50,
+        marginTop: 20,
         marginVertical: 0,
         flexDirection: 'row',
         backgroundColor: '#fff'
