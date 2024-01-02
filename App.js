@@ -50,11 +50,11 @@ function App() {
             store.dispatch(addCart(item));
           });
         }
-        if (history) {
-          history.forEach((item) => {
-            store.dispatch(addHistory(item));
-          });
-        }
+        // if (history) {
+        //   history.forEach((item) => {
+        //     store.dispatch(addHistory(item));
+        //   });
+        // }
 
         // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
         const storedInfoAddress = await getInfoAddressFromAsyncStorage();
