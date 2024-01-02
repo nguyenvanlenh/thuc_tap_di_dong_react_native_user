@@ -74,3 +74,25 @@ export const sendNotifications = async (title, body, token) => {
         console.error('Error sending notification:', error.message);
     }
 };
+export const GENERATE_QR_KEY_PRODUCT = 'TIKI_';
+
+export const generateQRKeyFromID = (id) => {
+    return GENERATE_QR_KEY_PRODUCT + id;
+};
+
+export const decryptKeyIdProductFromDataQRScanned = (value) => {
+    // Assuming the ID is concatenated after the prefix
+    const idStartIndex = GENERATE_QR_KEY_PRODUCT.length;
+
+    // Check if the value has the correct prefix
+    if (value.startsWith(GENERATE_QR_KEY_PRODUCT)) {
+        // Extract the ID from the value
+        const id = value.slice(idStartIndex);
+        return id;
+    } else {
+        // Handle invalid QR code format
+        console.error('Invalid QR code format');
+        return null;
+    }
+};
+
