@@ -1,6 +1,7 @@
 import {Dimensions, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {useNavigation} from "@react-navigation/native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 
 const SuggestedProduct = ({data}) =>{
@@ -30,11 +31,26 @@ const SuggestedProduct = ({data}) =>{
                             />
                         </View>
                         <View style={styles.titleProductWrap}>
-                            <Text numberOfLines={2} ellipsizeMode="tail"
+                            <Text numberOfLines={1} ellipsizeMode="tail"
                                   style={styles.titleProduct}>{item.name_product}</Text>
                         </View>
+                        <View style={styles.starContainer}>
+                            {Array.from({ length: 5 }, (v, i) => (
+                                <Ionicons
+                                    key={i}
+                                    name={
+                                        i < 5
+                                            ? "star"
+                                            : "star-outline"
+                                    }
+                                    color={
+                                        i < 5 ? "gold" : "gray"
+                                    }
+                                />
+                            ))}
+                        </View>
                         <View style={styles.priceProductWrap}>
-                            <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                            <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
                         </View>
                     </TouchableOpacity>
                 ))}
@@ -42,6 +58,18 @@ const SuggestedProduct = ({data}) =>{
         </View>
     )
 }
+const formatCurrency = (value) => {
+    // Kiểm tra nếu giá trị không phải là số
+    if (isNaN(value)) {
+        return "Invalid input";
+    }
+
+    // Sử dụng hàm toLocaleString để định dạng số tiền thành chuỗi tiền tệ
+    return value.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+    });
+};
 const { width } = Dimensions.get('window');
 const { height } = Dimensions.get('window');
 const styles = StyleSheet.create({
@@ -110,6 +138,10 @@ const styles = StyleSheet.create({
         lineHeight: 18, // line-height: 150% (12 * 1.5 = 18);
         color: 'rgb(39, 39, 42)', // color: rgb(39, 39, 42);
         margin: 0, // margin: 0px;
+    },
+    starContainer: {
+        paddingHorizontal: 8,
+        flexDirection: "row",
     },
     priceProductWrap:{
         paddingHorizontal: 8,

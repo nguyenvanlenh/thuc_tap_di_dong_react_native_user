@@ -12,9 +12,9 @@ const StarRating = ({ rating}) => {
           key={index}
         >
           <Icon
-            name={value <= rating ? 'star' : 'star-o'}
+            name={value <= 5 ? 'star' : 'star-o'}
             size={18}
-            color={ value<= rating ? '#f1c40f' : '#ccc'}
+            color={ value<= 5 ? '#f1c40f' : '#ccc'}
           />
         </TouchableOpacity>
       ))}

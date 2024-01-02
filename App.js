@@ -33,6 +33,7 @@ import { addHistory } from "./redux/slices/HistoryView";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import MessageAdminScreen from "./pages/MessageAdminScreen";
+import { SpeechVoice } from "./pages/SpeechVoice";
 function App() {
   const Stack = createNativeStackNavigator();
 
@@ -42,9 +43,6 @@ function App() {
       try {
         // Gọi hàm để lấy dữ liệu giỏ hàng từ AsyncStorage
         const carts = await getCartFromAsyncStorage();
-        // Gọi hàm để lấy dữ liệu sản phẩm đã xem từ AsyncStorage
-        const history = await getHistoryFromAsyncStorage();
-
 
         // Nếu có dữ liệu, dispatch action để cập nhật giỏ hàng trong Redux
         if (carts) {
@@ -69,23 +67,6 @@ function App() {
         if (storedInfoPayment) store.dispatch(setSelectedPayment(storedInfoPayment))
 
 
-        // Lắng nghe sự kiện AppState để xử lý khi ứng dụng chuyển sang trạng thái background hoặc inactive
-        const handleAppStateChange = (nextAppState) => {
-          if (nextAppState.match(/inactive|background/)) {
-            // Ứng dụng chuyển sang trạng thái background hoặc inactive
-
-            // Lấy dữ liệu giỏ hàng từ Redux store
-            const cartRedux = store.getState().carts;
-
-            // Lưu giỏ hàng xuống AsyncStorage
-            saveCartToAsyncStorage(cartRedux);
-            const historyRedux = store.getState().historys;
-            // Lưu giỏ hàng xuống AsyncStorage
-
-            saveHistoryViewToAsyncStorage(historyRedux)
-
-          }
-        };
 
         // Đăng ký lắng nghe sự kiện
         AppState.addEventListener('change', handleAppStateChange);
@@ -106,9 +87,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator
-        // initialRouteName="QRCode"
-        >
+        <Stack.Navigator >
           <Stack.Screen
             name="Main"
             component={MainContainer}
@@ -205,6 +184,19 @@ function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="SpeechVoice"
+            component={SpeechVoice}
+            options={{
+              title: "Tìm kiếm bằng giọng nói",
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: colors.blueRoot,
+              },
+              headerTintColor: "white",
+            }}
+          />
+
           <Stack.Screen name="HistoryViewProduct" component={HistoryViewProduct}
             options={{
               title: 'Sản phẩm đã xem',

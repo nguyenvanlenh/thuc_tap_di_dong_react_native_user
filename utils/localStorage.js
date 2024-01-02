@@ -43,24 +43,39 @@ export const addToCart = async (product) => {
         console.error("Lỗi khi thêm sản phẩm vào giỏ hàng:", error);
     }
 };
-export const saveHistoryViewToAsyncStorage = async (data) => {
+
+// lịch sử xem sản phẩm
+export const saveHistoryViewToAsyncStorage = async (product) => {
     try {
-        const jsonHistoryData = JSON.stringify(data);
-        await AsyncStorage.setItem("historyViewProduct", jsonHistoryData);
+        console.log("Saving history:", product);
+        // Get the existing history data from AsyncStorage
+        const existingHistoryData = await getHistoryFromAsyncStorage();
+
+        // Check if the product with the given ID already exists in the history
+        const productExists = existingHistoryData && existingHistoryData.some((item) => item.id_product === product.id_product);
+
+        if (!productExists) {
+            // If the product doesn't exist, add it to the history
+            const updatedHistoryData = [...(existingHistoryData || []), product];
+            const jsonHistoryData = JSON.stringify(updatedHistoryData);
+            await AsyncStorage.setItem("historyViewProduct", jsonHistoryData);
+        }
 
     } catch (error) {
-        console.error("Lỗi khi lưu giỏ hàng:", error);
+        console.error("Error saving history:", error);
     }
 };
+
 export const getHistoryFromAsyncStorage = async () => {
     try {
         const jsonHistoryData = await AsyncStorage.getItem("historyViewProduct");
         return jsonHistoryData != null ? JSON.parse(jsonHistoryData) : null;
     } catch (error) {
-        console.error("Lỗi khi đọc giỏ hàng:", error);
+        console.error("Error reading history:", error);
         return null;
     }
 };
+
 
 export const savePermissionToAsyncStorage = async (key, data) => {
     try {

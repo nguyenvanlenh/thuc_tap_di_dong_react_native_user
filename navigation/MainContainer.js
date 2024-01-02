@@ -25,12 +25,12 @@ const Tab = createBottomTabNavigator();
 function MainContainer() {
   const auth = useSelector(state => state.auth)
   const navigation = useNavigation()
-  React.useEffect(() => {
-    // Check if the user is not authenticated, then navigate to the Login screen
-    if (!auth.user) {
-      navigation.navigate('Login');
-    }
-  }, [auth.user, navigation]);
+  // React.useEffect(() => {
+  //   // Check if the user is not authenticated, then navigate to the Login screen
+  //   if (!auth.user) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [auth.user, navigation]);
   return (
     <Tab.Navigator
       initialRouteName={homeName}

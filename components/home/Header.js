@@ -1,6 +1,6 @@
 
 import React from "react";
-import {Dimensions, StatusBar} from "react-native";
+import { Dimensions, StatusBar } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import {
     View,
@@ -49,7 +49,7 @@ export default function Header() {
         </View>
     );
 }
-const {width} = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 const styles = StyleSheet.create({
     header: {
         marginTop: StatusBar.currentHeight || 0,
@@ -128,8 +128,8 @@ const styles = StyleSheet.create({
         padding: 0,
         fontWeight: "400", // Tương đương với font-weight: 400;
         fontSize: 14,
-        color:'#AAAAAA'
-        
+        color: '#AAAAAA'
+
     },
     cart: {
         position: "relative",
