@@ -3,8 +3,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  categories: ["Giày Jordan Nam", "Giày Jordan Nữ", "Giày Adidas Nam", "Giày Adidas Nữ", "Giày Nike Nam","Giày Nike Nữ"],
-  selectedCategory: "Giày Jordan Nam",
+  categories: ["Đồ Nike Nam", "Đồ Nike Nữ", "Đồ Adidas Nam", "Đồ Adidas Nữ", "Đồ Puma Nam","Đồ Puma Nữ"],
+  selectedCategory: "Đồ Nike Nam",
 };
 
 const categorySlice = createSlice({

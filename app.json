@@ -22,10 +22,16 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.watermelondev.App_Ban_Hang_User"
+      "package": "com.nguyendulap.App_Ban_Hang_User",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e0744dcd-1de8-4055-a84b-15bec5e5f8e7"
+      }
     }
   }
 }

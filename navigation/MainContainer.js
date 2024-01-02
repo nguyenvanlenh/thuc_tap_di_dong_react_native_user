@@ -8,18 +8,29 @@ import CategoryScreen from './screens/CategoryScreen';
 import MessageScreen from './screens/MessageScreen';
 import AccountScreen from './screens/AccountScreen';
 import { QrCode } from './screens/QrCode';
+import { useSelector } from 'react-redux';
+import MessengerHomeAdmin from './screens/MessengerHomeAdmin';
+import { useNavigation } from '@react-navigation/native';
 
 
 //Screen names
 const homeName = "Trang chủ";
 const categoryName = "Danh mục";
 const scaner = "Quét";
-const messageName = "Tin mới";
+const messageName = "Tin nhắn";
 const accountName = "Tài khoản";
 
 const Tab = createBottomTabNavigator();
 
 function MainContainer() {
+  const auth = useSelector(state => state.auth)
+  const navigation = useNavigation()
+  // React.useEffect(() => {
+  //   // Check if the user is not authenticated, then navigate to the Login screen
+  //   if (!auth.user) {
+  //     navigation.navigate('Login');
+  //   }
+  // }, [auth.user, navigation]);
   return (
     <Tab.Navigator
       initialRouteName={homeName}
@@ -46,20 +57,28 @@ function MainContainer() {
           return <Ionicons name={iconName} size={size} color={color} />;
 
         },
-        headerShown: false,
+        headerShown: route.name === messageName ? true : false,
         tabBarLabelStyle: {
           paddingBottom: 6,
           fontSize: 10,
         },
         tabBarStyle: {
-          padding: 4
+          padding: 4,
+          display: route.name === messageName ? 'none' : 'flex'
         }
       })}
     >
       <Tab.Screen name={homeName} component={HomeScreen} />
       <Tab.Screen name={categoryName} component={CategoryScreen} />
       <Tab.Screen name={scaner} component={QrCode} />
-      <Tab.Screen name={messageName} component={MessageScreen} />
+      {
+        auth?.user?.email == 'admin@gmail.com' ? (
+          <Tab.Screen name={messageName} component={MessengerHomeAdmin} />
+        ) : (
+          <Tab.Screen name={messageName} component={MessageScreen} />
+        )
+      }
+
       <Tab.Screen name={accountName} component={AccountScreen} />
     </Tab.Navigator>
   );

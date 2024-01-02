@@ -24,7 +24,7 @@ const CategoryScreen = () => {
   const [loading, setLoading] = useState(false);
   const [numColumns, setNumColumns] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pressedCategory, setPressedCategory] = useState("Giày Jordan Nam");
+  const [pressedCategory, setPressedCategory] = useState("Đồ Nike Nam");
 
   useEffect(() => {
     const getProducts = async (apiEndpoint) => {
@@ -43,23 +43,23 @@ const CategoryScreen = () => {
 
     const fetchData = () => {
       switch (selectedCategory) {
-        case 'Giày Jordan Nữ':
-          getProducts(API_GET_PATHS.lay_ds_giay_jordan_nu);
+        case 'Đồ Puma Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_puma_nu);
           break;
-        case 'Giày Jordan Nam':
-          getProducts(API_GET_PATHS.lay_ds_giay_jordan_nam);
+        case 'Đồ Puma Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_puma_nam);
           break;
-        case 'Giày Adidas Nữ':
-          getProducts(API_GET_PATHS.lay_ds_giay_adidas_nu);
+        case 'Đồ Adidas Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_adidas_nu);
           break;
-        case 'Giày Adidas Nam':
-          getProducts(API_GET_PATHS.lay_ds_giay_adidas_nam);
+        case 'Đồ Adidas Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_adidas_nam);
           break;
-        case 'Giày Nike Nữ':
-          getProducts(API_GET_PATHS.lay_ds_giay_nike_nu);
+        case 'Đồ Nike Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_nike_nu);
           break;
-        case 'Giày Nike Nam':
-          getProducts(API_GET_PATHS.lay_ds_giay_nike_nam);
+        case 'Đồ Nike Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_nike_nam);
           break;
         default:
           // Handle unmatched category
@@ -84,13 +84,10 @@ const CategoryScreen = () => {
   const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        handleCategoryPress(item.name_product);
         navigation.navigate("ProductDetail", {
           productId: item.id_product,
         });
       }}
-
-
       style={[
         styles.productTab,
         styles.categoryItem,
@@ -105,6 +102,7 @@ const CategoryScreen = () => {
       <Text style={styles.productTabText}>Giá: {formatMoney(item.listed_price)}</Text>
     </TouchableOpacity>
   );
+
   return (
     <View style={styles.categoryMain}>
       <View style={styles.header}>
@@ -142,7 +140,7 @@ const CategoryScreen = () => {
                 {/* <View style={styles.triangle}></View> */}
                 <View style={[styles.leftActiveBarPressed, pressedCategory === category && styles.triangle]}></View>
               </View>
-              <Image style={styles.imageCategory} alt={category} source={require('../../assets/jordan.png')} />
+              <Image style={styles.imageCategory} alt={category} source={require('../../assets/football.png')} />
               <Text style={styles.textCategory}>{category}</Text>
             </TouchableOpacity>
           ))}
@@ -169,6 +167,7 @@ const CategoryScreen = () => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   categoryMain: {
     flex: 1,
@@ -304,10 +303,6 @@ const styles = StyleSheet.create({
   titleCategory: {
     fontSize: 20,
     fontWeight: 'bold',
-  },
-  iconFilter: {
-    fontSize: 20,
-    color: "blue",
   },
   titleContainer: {
     flexDirection: 'row',
