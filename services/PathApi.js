@@ -5,17 +5,15 @@ export const API_GET_PATHS = {
     lay_ds_ao: `${BASE_URL}/api/products/`,
     lay_ds_ao_all: `${BASE_URL}/api/products`,
 
-    lay_ds_giay_hot: `${BASE_URL}/api/product-shoes/ds-giay-hot?`,
-    lay_ds_giay_khuyen_mai: `${BASE_URL}/api/product-shoes/ds-giay-khuyen_mai?`,
+    lay_ds_do_nike_nam: `${BASE_URL}/api/products/ds-ao-da-banh-nike-nam?`,
+    lay_ds_do_nike_nu: `${BASE_URL}/api/products/ds-ao-da-banh-nike-nu?`,
 
-    lay_ds_giay_nike_nam: `${BASE_URL}/api/product-shoes/ds-giay-nike-nam?`,
-    lay_ds_giay_nike_nu: `${BASE_URL}/api/product-shoes/ds-giay-nike-nu?`,
+    lay_ds_do_adidas_nam: `${BASE_URL}/api/products/ds-ao-da-banh-adidas-nam?`,
+    lay_ds_do_adidas_nu: `${BASE_URL}/api/products/ds-ao-da-banh-adidas-nu?`,
 
-    lay_ds_giay_adidas_nam: `${BASE_URL}/api/product-shoes/ds-giay-adidas-nam?`,
-    lay_ds_giay_adidas_nu: `${BASE_URL}/api/product-shoes/ds-giay-adidas-nu?`,
-
-    lay_ds_giay_jordan_nam: `${BASE_URL}/api/product-shoes/ds-giay-jordan-nam?`,
-    lay_ds_giay_jordan_nu: `${BASE_URL}/api/product-shoes/ds-giay-jordan-nu?`,
+    lay_ds_do_puma_nam: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nam?`,
+    lay_ds_do_puma_nu: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nu?`,
+// --------------------
 
     lay_ds_san_pham_theo_ten: `${BASE_URL}/api/products/ds-san-pham?`,
     lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product/`,
