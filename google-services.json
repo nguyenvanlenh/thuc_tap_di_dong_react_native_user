@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "35062094508",
+    "firebase_url": "https://app-chat-fa8c1-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "app-chat-fa8c1",
+    "storage_bucket": "app-chat-fa8c1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35062094508:android:29c0ee8d87d34f5bab5d09",
+        "android_client_info": {
+          "package_name": "com.app.chat"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMPaz2GK4jnBl6AYuTO1y49sxDKeODP5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:35062094508:android:3c8ebc468e963725ab5d09",
+        "android_client_info": {
+          "package_name": "com.nguyendulap.App_Ban_Hang_User"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMPaz2GK4jnBl6AYuTO1y49sxDKeODP5c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -8,6 +8,10 @@ export const colors = {
   grey: "#818181",
   redPrice: "#db4d4a",
   white: "#fff",
+  primary: '#f57c00',
+  gray: '#C5C5C7',
+  mediumGray: '#F6F7FB',
+  lightGray: '#FAFAFA',
 
   bgButtonBlue: "#f0f8ff",
   bgButtonGreen: "#effff4",

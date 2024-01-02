@@ -30,8 +30,10 @@ import HistoryViewProduct from "./pages/HistoryViewProduct";
 import { AppState } from "react-native";
 
 import { addHistory } from "./redux/slices/HistoryView";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import MessageAdminScreen from "./pages/MessageAdminScreen";
 import { SpeechVoice } from "./pages/SpeechVoice";
-
 function App() {
   const Stack = createNativeStackNavigator();
 
@@ -73,6 +75,7 @@ function App() {
         return () => {
           AppState.removeEventListener('change', handleAppStateChange);
         };
+
       } catch (error) {
         console.error(error);
       }
@@ -80,6 +83,7 @@ function App() {
 
     fetchData();
   }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
@@ -220,8 +224,24 @@ function App() {
               },
               headerTintColor: 'white',
             }} />
-
-
+          <Stack.Screen name="Login" component={Login}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="Register" component={Register}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="MessageAdmin" component={MessageAdminScreen}
+            options={{
+              title: 'Tin nhắn',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colors.blueRoot,
+              },
+              headerTintColor: 'white',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
