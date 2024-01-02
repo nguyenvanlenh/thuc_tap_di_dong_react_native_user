@@ -1,5 +1,5 @@
 
-export const BASE_URL = 'http://tmt020202ccna-001-site1.atempurl.com'
+export const BASE_URL = 'http://localhost:8080'
 
 export const API_GET_PATHS = {
     lay_ds_giay_moi: `${BASE_URL}/api/product-shoes/ds-giay-moi?`,
@@ -16,7 +16,9 @@ export const API_GET_PATHS = {
     lay_ds_giay_jordan_nu: `${BASE_URL}/api/product-shoes/ds-giay-jordan-nu?`,
 
     lay_ds_san_pham_theo_ten: `${BASE_URL}/api/products/ds-san-pham?`,
-    lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product?`,
+    lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product/`,
+    tim_kiem_san_pham: `${BASE_URL}/api/products/search?name=`,
+    danh_gia_san_pham: `${BASE_URL}/api/comment`,
 
     chi_tiet_don_hang: `${BASE_URL}/api/order/infor-order?`,
     lich_su_mua_hang: `${BASE_URL}/api/history/lich-su-mua-hang?`
