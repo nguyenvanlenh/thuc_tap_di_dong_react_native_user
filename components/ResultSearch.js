@@ -73,39 +73,43 @@ const ResultSearch = ({ route }) => {
 
         <View style={styles.listProduct}>
 
-          {data.map((item) => (
-            <TouchableOpacity
-              style={styles.productItem}
-              key={item.id_product}
-              onPress={() =>
-                navigation.navigate("ProductDetail", {
-                  productId: item.id_product,
-                })
-              }
-            >
-              <View style={styles.imageProductWrap}>
-                {item.list_image[0] && item.list_image[0].path_image && (
-                  <Image
-                    source={{ uri: item.list_image[0].path_image }}
-                    style={styles.imageProduct}
-                  />
-                )}
-              </View>
+          {Array.isArray(data) && data.length > 0 ? (
+            data.map((item) => (
+              <TouchableOpacity
+                style={styles.productItem}
+                key={item.id_product}
+                onPress={() =>
+                  navigation.navigate("ProductDetail", {
+                    productId: item.id_product,
+                  })
+                }
+              >
+                <View style={styles.imageProductWrap}>
+                  {item.list_image[0] && item.list_image[0].path_image && (
+                    <Image
+                      source={{ uri: item.list_image[0].path_image }}
+                      style={styles.imageProduct}
+                    />
+                  )}
+                </View>
 
-              <View style={styles.titleProductWrap}>
-                <Text
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                  style={styles.titleProduct}
-                >
-                  {item.name_product}
-                </Text>
-              </View>
-              <View style={styles.priceProductWrap}>
-                <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+                <View style={styles.titleProductWrap}>
+                  <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    style={styles.titleProduct}
+                  >
+                    {item.name_product}
+                  </Text>
+                </View>
+                <View style={styles.priceProductWrap}>
+                  <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text>No data available</Text>
+          )}
         </View>
       </View>
     </ScrollView>
