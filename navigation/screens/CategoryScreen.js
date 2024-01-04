@@ -1,36 +1,110 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, FlatList } from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, FlatList, Modal } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CartIcon from '../../components/CartIcon';
 import { categorySelector, selectCategory } from '../../redux/slices/CategorySlice';
-import {useNavigation} from "@react-navigation/native";
-import {API_GET_PATHS} from '../../services/PathApi';
-import {formatMoney} from '../../utils/Utils';
+import { useNavigation } from "@react-navigation/native";
+import { API_GET_PATHS } from '../../services/PathApi';
+import { formatMoney } from '../../utils/Utils';
 import VoteScreen from '../../components/VoteScreen';
 import { colors } from '../../theme';
+import SelectionAttributeBrand from "../../components/Category/SelectionAttributeBrand";
 
 const handleProductPress = () => {
   // Gọi màn hình đánh giá khi sản phẩm được nhấn
   navigation.navigate('VoteScreen');
 };
 const CategoryScreen = () => {
-  const navigation = useNavigation();
 
+
+  const [activeButtonBrand, setActiveButtonBrand] = useState(null);
+  const handleActiveButtonChangeBrand = (newActiveButton) => {
+    setActiveButtonBrand(newActiveButton);
+  };
+
+  const [takeAttribute, setTakeAttribute] = useState({
+    brand: "",
+    gender: "",
+    type: "",
+  })
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const { categories, selectedCategory } = useSelector(categorySelector);
-
   const [leftData, setLeftData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [numColumns, setNumColumns] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
   const [pressedCategory, setPressedCategory] = useState("Đồ Nike Nam");
 
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const [isReset, setIsReset] = useState(false);
+  const getData = (name, value) => {
+    // setTakeAttribute({brand, gender, type})
+    switch (name) {
+      case "Thương hiệu":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          brand: value
+        }));
+        break;
+      case "Giới tính":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          gender: value
+        }));
+        break;
+      case "Thể loại":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          type: value
+        }));
+        break;
+    }
+  }
+  const handleReset = () => {
+    setIsReset(true)
+  };
+  useEffect(() => {
+    setIsReset(false)
+    setTakeAttribute({
+      brand: "",
+      gender: "",
+      type: "",
+    })
+  }, [isReset])
+
+  const dataAll = [
+    {
+      title: "Thương hiệu",
+      data: [
+        { id: 1, label: "NIKE" },
+        { id: 2, label: "ADIDAS" },
+        { id: 3, label: "PUMA" },
+      ]
+    },
+    {
+      title: "Giới tính",
+      data: [
+        { id: 0, label: "NAM" },
+        { id: 1, label: "NỮ" },
+      ]
+    },
+    {
+      title: "Thể loại",
+      data: [
+        { id: 1, label: "ÁO ĐẤU" },
+        { id: 2, label: "ÁO HUẤN LUYỆN" },
+        { id: 3, label: "ÁO THỦ MÔN" },
+        { id: 4, label: "ÁO FAN" },
+      ]
+    },];
   useEffect(() => {
     const getProducts = async (apiEndpoint) => {
       setLoading(true);
       try {
-        const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);      
+        const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
         const responseData = await response.json();
 
         setLeftData((prevData) => [...prevData, ...responseData.data]);
@@ -68,7 +142,62 @@ const CategoryScreen = () => {
     };
 
     fetchData();
-  }, [currentPage, selectedCategory]);
+  }, [selectedCategory]);
+
+  useEffect(() => {
+    const getProducts = async (apiEndpoint) => {
+      setLoading(true);
+      try {
+        let response;
+        if (takeAttribute.gender != "" || takeAttribute.brand != "" || takeAttribute.type != "") {
+          response = await fetch(API_GET_PATHS.lay_ds_loc +
+            "brand=" + takeAttribute.brand +
+            "&sex=" + takeAttribute.gender +
+            "&type=" + takeAttribute.type +
+            "&size=15" +
+            "&page=" + currentPage
+          );
+
+        } else {
+          response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
+        }
+        const responseData = await response.json();
+
+        setLeftData((prevData) => [...prevData, ...responseData.data]);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    const fetchData = () => {
+      switch (selectedCategory) {
+        case 'Đồ Puma Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_puma_nu);
+          break;
+        case 'Đồ Puma Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_puma_nam);
+          break;
+        case 'Đồ Adidas Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_adidas_nu);
+          break;
+        case 'Đồ Adidas Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_adidas_nam);
+          break;
+        case 'Đồ Nike Nữ':
+          getProducts(API_GET_PATHS.lay_ds_do_nike_nu);
+          break;
+        case 'Đồ Nike Nam':
+          getProducts(API_GET_PATHS.lay_ds_do_nike_nam);
+          break;
+        default:
+          // Handle unmatched category
+          break;
+      }
+    };
+    fetchData()
+  }, [currentPage])
 
   const handleCategoryPress = (category) => {
     dispatch(selectCategory(category));
@@ -103,6 +232,23 @@ const CategoryScreen = () => {
     </TouchableOpacity>
   );
 
+  const handleDataUseFetch = async () => {
+
+    try {
+      setLoading(true);
+      const response = await fetch(API_GET_PATHS.lay_ds_loc +
+        "brand=" + takeAttribute.brand +
+        "&sex=" + takeAttribute.gender +
+        "&type=" + takeAttribute.type +
+        "&size=15");
+      const newData = await response.json();
+      setLeftData(newData.data);
+
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setModalVisible(false);
+  }
   return (
     <View style={styles.categoryMain}>
       <View style={styles.header}>
@@ -117,10 +263,10 @@ const CategoryScreen = () => {
         </View>
         <TouchableOpacity>
           <CartIcon sizeIcon={26}
-                    colorIcon={colors.blueRoot}
-                    activeBGColor={true}
-                    bGQuantity={colors.bgButtonRed}
-                    colorQuantity="#fff" />
+            colorIcon={colors.blueRoot}
+            activeBGColor={true}
+            bGQuantity={colors.bgButtonRed}
+            colorQuantity="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
@@ -149,8 +295,9 @@ const CategoryScreen = () => {
           <View>
             <View style={styles.titleContainer}>
               <Text style={styles.titleCategory}>{selectedCategory} </Text>
-              <Icon name='filter' style={styles.iconFilter}></Icon>
-
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Icon name='filter' style={styles.iconFilter}></Icon>
+              </TouchableOpacity>
             </View>
             <FlatList
               data={leftData}
@@ -164,11 +311,111 @@ const CategoryScreen = () => {
           </View>
         </View>
       </View>
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <View style={styles.modalHeader}>
+              <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text style={styles.closeButton}>×</Text>
+              </TouchableOpacity>
+              <Text style={styles.modalTitle}>Lọc Sản Phẩm</Text>
+            </View>
+            {/*<SelectionAttributeBrand title={"Thương Hiệu"} buttons={buttons} onActiveButtonChange={handleActiveButtonChangeBrand} reset={handleReset} />*/}
+            {dataAll.map((i, index) =>
+              <SelectionAttributeBrand
+                key={index}
+                data={i}
+                onActiveButtonChange={handleActiveButtonChangeBrand}
+                reset={isReset}
+                getData={getData}
+              />
+            )
+            }
+            <View style={styles.modalGroupButton}>
+              <TouchableOpacity style={styles.modalButtonReset} onPress={handleReset}>
+                <Text style={styles.textReset}>Thiết lập lại</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.modalButtonClose} onPress={handleDataUseFetch} >
+                <Text style={styles.textClose}>Áp dụng</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </View>
+
   );
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    flexDirection: "row",
+    // alignItems: 'flex-end',
+    justifyContent: "flex-end",
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Để làm mờ giao diện cũ
+  },
+  modalContent: {
+    height: '100%', // Độ dài khoảng 2 phần 3 màn hình
+    width: '80%',
+    backgroundColor: 'white',
+  },
+  modalHeader: {
+    height: 50,
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    backgroundColor: "rgb(27, 168, 255)",
+  },
+  closeButton: {
+    fontSize: 24,
+    color: "white",
+    paddingLeft: 20
+  },
+  modalTitle: {
+    fontSize: 17,
+    color: "white",
+    paddingRight: 20,
+    fontWeight: "500",
+  },
+  modalGroupButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    height: 50
+  },
+  modalButtonReset: {
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: "rgb(27, 168, 255)",
+    width: "45%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  modalButtonClose: {
+    marginRight: 10,
+    marginTop: 10,
+    borderRadius: 5,
+    backgroundColor: "rgb(27, 168, 255)",
+    width: "45%",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  textReset: {
+    color: "white",
+    fontWeight: "500",
+  },
+  textClose: {
+    color: "white",
+    fontWeight: "500",
+  },
+
   categoryMain: {
     flex: 1,
     flexDirection: 'column',

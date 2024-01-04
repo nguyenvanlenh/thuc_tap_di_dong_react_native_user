@@ -50,11 +50,11 @@ function App() {
             store.dispatch(addCart(item));
           });
         }
-        if (history) {
-          history.forEach((item) => {
-            store.dispatch(addHistory(item));
-          });
-        }
+        // if (history) {
+        //   history.forEach((item) => {
+        //     store.dispatch(addHistory(item));
+        //   });
+        // }
 
         // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
         const storedInfoAddress = await getInfoAddressFromAsyncStorage();
@@ -65,7 +65,19 @@ function App() {
 
         const storedInfoPayment = await getMethodPaymentFromAsyncStorage()
         if (storedInfoPayment) store.dispatch(setSelectedPayment(storedInfoPayment))
+        // Lắng nghe sự kiện AppState để xử lý khi ứng dụng chuyển sang trạng thái background hoặc inactive
+        const handleAppStateChange = (nextAppState) => {
+          if (nextAppState.match(/inactive|background/)) {
+            // Ứng dụng chuyển sang trạng thái background hoặc inactive
 
+            // Lấy dữ liệu giỏ hàng từ Redux store
+            const cartRedux = store.getState().carts;
+
+            // Lưu giỏ hàng xuống AsyncStorage
+            saveCartToAsyncStorage(cartRedux);
+
+          }
+        };
 
 
         // Đăng ký lắng nghe sự kiện
@@ -244,7 +256,7 @@ function App() {
           />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+    </Provider >
   );
 
 }
