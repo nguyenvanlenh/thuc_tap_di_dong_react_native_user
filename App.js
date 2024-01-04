@@ -65,7 +65,19 @@ function App() {
 
         const storedInfoPayment = await getMethodPaymentFromAsyncStorage()
         if (storedInfoPayment) store.dispatch(setSelectedPayment(storedInfoPayment))
+        // Lắng nghe sự kiện AppState để xử lý khi ứng dụng chuyển sang trạng thái background hoặc inactive
+        const handleAppStateChange = (nextAppState) => {
+          if (nextAppState.match(/inactive|background/)) {
+            // Ứng dụng chuyển sang trạng thái background hoặc inactive
 
+            // Lấy dữ liệu giỏ hàng từ Redux store
+            const cartRedux = store.getState().carts;
+
+            // Lưu giỏ hàng xuống AsyncStorage
+            saveCartToAsyncStorage(cartRedux);
+
+          }
+        };
 
 
         // Đăng ký lắng nghe sự kiện
@@ -87,7 +99,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator >
+        <Stack.Navigator>
           <Stack.Screen
             name="Main"
             component={MainContainer}

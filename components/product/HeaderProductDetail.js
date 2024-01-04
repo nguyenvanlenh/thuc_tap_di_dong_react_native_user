@@ -15,9 +15,7 @@ import { GENERATE_QR_KEY_PRODUCT, generateQRKeyFromID } from "../../utils/Utils"
 
 export const HeaderProductDetail = ({ navigation, id }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-  // alert(id)
   const handleViewOver = () => {
-    // Show the modal for sharing
     setIsModalVisible(true);
   };
 
@@ -102,7 +100,6 @@ export const HeaderProductDetail = ({ navigation, id }) => {
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>QR Code</Text>
 
-            // Truyen key de generate ra ma QR tuong ung
             <QRCode
               value={`${generateQRKeyFromID(id)}`}
               size={200}
