@@ -11,10 +11,11 @@ import { colors } from "../../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { useSelector } from "react-redux";
 import QRCode from 'react-native-qrcode-svg';
-import { GENERATE_QR_KEY_PRODUCT, generateQRKeyFromID } from "../../utils/Utils";
+import { generateQRKeyFromID } from "../../utils/Utils";
 
 export const HeaderProductDetail = ({ navigation, id }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [productId, setProductId] = useState(); // Change the variable name
   const handleViewOver = () => {
     setIsModalVisible(true);
   };
@@ -24,6 +25,9 @@ export const HeaderProductDetail = ({ navigation, id }) => {
   useEffect(() => {
     setCartsCount(carts.length);
   }, [carts]); // Gọi useEffect khi cartItems thay đổi
+  useEffect(() => {
+    setProductId(id)
+  }, []); // Gọi useEffect khi cartItems thay đổi
 
   return (
     <>
@@ -101,7 +105,7 @@ export const HeaderProductDetail = ({ navigation, id }) => {
             <Text style={styles.modalTitle}>QR Code</Text>
 
             <QRCode
-              value={`${generateQRKeyFromID(id)}`}
+              value={`${generateQRKeyFromID(productId)}`}
               size={200}
               color="black"
               backgroundColor="white"
