@@ -142,9 +142,6 @@ const styles = StyleSheet.create({
         color: '#27272a', // Màu tương ứng với rgb(39, 39, 42)
     },
     //-------------------------------------------------------------------
-    horizontalScrollContainer: {
-        // Add any container styles here
-    },
     productTabContainer: {
         flexDirection: 'row',
         gap: 8,

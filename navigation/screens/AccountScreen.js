@@ -10,6 +10,8 @@ import { useSelector } from 'react-redux';
 
 function AccountScreen() {
   const auth = useSelector(state => state.auth)
+  const user = useSelector(state => state.user)
+  console.log("account: ", user);
   const navigation = useNavigation();
   const isFocused = useIsFocused(); // Sử dụng useIsFocused để kiểm tra màn hình này có đang được tập trung hay không
   useEffect(() => {
@@ -57,10 +59,10 @@ function AccountScreen() {
               </TouchableOpacity>
               <View style={styles.containerName}>
                 {
-                  auth?.user ?
+                  user?.user ?
                     (<>
                       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Text style={{ fontSize: 18, fontWeight: 600 }}>Muleup Nguyen</Text>
+                        <Text style={{ fontSize: 18, fontWeight: 600 }}>{user?.user?.fullName}</Text>
                         <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
                       </View>
                       <TouchableOpacity

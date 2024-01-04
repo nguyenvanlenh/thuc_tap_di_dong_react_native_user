@@ -13,6 +13,8 @@ export const API_GET_PATHS = {
 
     lay_ds_do_puma_nam: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nam?`,
     lay_ds_do_puma_nu: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nu?`,
+
+    lay_ds_loc: `${BASE_URL}/api/products/filter?`,
     // --------------------
 
     lay_ds_san_pham_theo_ten: `${BASE_URL}/api/products/ds-san-pham?`,
@@ -27,4 +29,9 @@ export const API_GET_PATHS = {
 
 export const API_POST_PATHS = {
     tao_don_hang: `${BASE_URL}/api/order/create-order`
+}
+
+export const API_AUTH = {
+    login: `${BASE_URL}/api/authentication/login-user`,
+    register: `${BASE_URL}/api/register`
 }
