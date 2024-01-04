@@ -104,7 +104,7 @@ const CategoryScreen = () => {
     const getProducts = async (apiEndpoint) => {
       setLoading(true);
       try {
-        const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
+        const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=3`);
         const responseData = await response.json();
 
         setLeftData((prevData) => [...prevData, ...responseData.data]);
