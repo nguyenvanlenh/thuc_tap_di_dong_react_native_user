@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import {StyleSheet, View, TextInput, TouchableOpacity, Text, Image, FlatList, Modal} from 'react-native';
+import { StyleSheet, View, TextInput, TouchableOpacity, Text, Image, FlatList, Modal } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CartIcon from '../../components/CartIcon';
 import { categorySelector, selectCategory } from '../../redux/slices/CategorySlice';
-import {useNavigation} from "@react-navigation/native";
-import {API_GET_PATHS} from '../../services/PathApi';
-import {formatMoney} from '../../utils/Utils';
+import { useNavigation } from "@react-navigation/native";
+import { API_GET_PATHS } from '../../services/PathApi';
+import { formatMoney } from '../../utils/Utils';
 import VoteScreen from '../../components/VoteScreen';
 import { colors } from '../../theme';
 import SelectionAttributeBrand from "../../components/Category/SelectionAttributeBrand";
@@ -63,38 +63,43 @@ const CategoryScreen = () => {
         break;
     }
   }
-  // console.log(takeAttribute);
   const handleReset = () => {
     setIsReset(true)
   };
-  useEffect(()=> {
+  useEffect(() => {
     setIsReset(false)
     setTakeAttribute({
       brand: "",
       gender: "",
       type: "",
     })
-  } , [isReset])
+  }, [isReset])
 
   const dataAll = [
-    {title: "Thương hiệu",
-    data: [
-      { id: 1, label: "NIKE" },
-      { id: 2, label: "ADIDAS" },
-      { id: 3, label: "PUMA" },
-    ]},
-    {title: "Giới tính",
+    {
+      title: "Thương hiệu",
+      data: [
+        { id: 1, label: "NIKE" },
+        { id: 2, label: "ADIDAS" },
+        { id: 3, label: "PUMA" },
+      ]
+    },
+    {
+      title: "Giới tính",
       data: [
         { id: 0, label: "NAM" },
         { id: 1, label: "NỮ" },
-      ]},
-    {title: "Thể loại",
+      ]
+    },
+    {
+      title: "Thể loại",
       data: [
         { id: 1, label: "ÁO ĐẤU" },
         { id: 2, label: "ÁO HUẤN LUYỆN" },
         { id: 3, label: "ÁO THỦ MÔN" },
         { id: 4, label: "ÁO FAN" },
-      ]},];
+      ]
+    },];
   useEffect(() => {
     const getProducts = async (apiEndpoint) => {
       setLoading(true);
@@ -144,16 +149,16 @@ const CategoryScreen = () => {
       setLoading(true);
       try {
         let response;
-        if(takeAttribute.gender != "" || takeAttribute.brand != "" || takeAttribute.type != ""){
+        if (takeAttribute.gender != "" || takeAttribute.brand != "" || takeAttribute.type != "") {
           response = await fetch(API_GET_PATHS.lay_ds_loc +
-              "brand=" + takeAttribute.brand +
-              "&sex=" + takeAttribute.gender +
-              "&type="+ takeAttribute.type +
-              "&size=15" +
-              "&page=" + currentPage
+            "brand=" + takeAttribute.brand +
+            "&sex=" + takeAttribute.gender +
+            "&type=" + takeAttribute.type +
+            "&size=15" +
+            "&page=" + currentPage
           );
 
-        }else{
+        } else {
           response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
         }
         const responseData = await response.json();
@@ -192,7 +197,7 @@ const CategoryScreen = () => {
       }
     };
     fetchData()
-  },[currentPage])
+  }, [currentPage])
 
   const handleCategoryPress = (category) => {
     dispatch(selectCategory(category));
@@ -227,22 +232,16 @@ const CategoryScreen = () => {
     </TouchableOpacity>
   );
 
-  const handleDataUseFetch = async () =>{
+  const handleDataUseFetch = async () => {
 
     try {
       setLoading(true);
-      console.log(API_GET_PATHS.lay_ds_loc +
-          "brand=" + takeAttribute.brand +
-          "&sex=" + takeAttribute.gender +
-          "&type="+ takeAttribute.type +
-          "&size=15");
       const response = await fetch(API_GET_PATHS.lay_ds_loc +
-          "brand=" + takeAttribute.brand +
-          "&sex=" + takeAttribute.gender +
-          "&type="+ takeAttribute.type +
-          "&size=15");
+        "brand=" + takeAttribute.brand +
+        "&sex=" + takeAttribute.gender +
+        "&type=" + takeAttribute.type +
+        "&size=15");
       const newData = await response.json();
-      console.log(newData);
       setLeftData(newData.data);
 
     } catch (error) {
@@ -264,10 +263,10 @@ const CategoryScreen = () => {
         </View>
         <TouchableOpacity>
           <CartIcon sizeIcon={26}
-                    colorIcon={colors.blueRoot}
-                    activeBGColor={true}
-                    bGQuantity={colors.bgButtonRed}
-                    colorQuantity="#fff" />
+            colorIcon={colors.blueRoot}
+            activeBGColor={true}
+            bGQuantity={colors.bgButtonRed}
+            colorQuantity="#fff" />
         </TouchableOpacity>
       </View>
       <View style={styles.body}>
@@ -313,10 +312,10 @@ const CategoryScreen = () => {
         </View>
       </View>
       <Modal
-          visible={modalVisible}
-          transparent={true}
-          animationType="slide"
-          onRequestClose={() => setModalVisible(false)}
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
@@ -329,11 +328,11 @@ const CategoryScreen = () => {
             {/*<SelectionAttributeBrand title={"Thương Hiệu"} buttons={buttons} onActiveButtonChange={handleActiveButtonChangeBrand} reset={handleReset} />*/}
             {dataAll.map((i, index) =>
               <SelectionAttributeBrand
-                  key = {index}
-                  data = {i}
-                  onActiveButtonChange={handleActiveButtonChangeBrand}
-                  reset={isReset}
-                  getData={getData}
+                key={index}
+                data={i}
+                onActiveButtonChange={handleActiveButtonChangeBrand}
+                reset={isReset}
+                getData={getData}
               />
             )
             }
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     // alignItems: 'flex-end',
-    justifyContent:"flex-end",
+    justifyContent: "flex-end",
     backgroundColor: 'rgba(0, 0, 0, 0.5)', // Để làm mờ giao diện cũ
   },
   modalContent: {
@@ -379,40 +378,40 @@ const styles = StyleSheet.create({
     color: "white",
     paddingLeft: 20
   },
-  modalTitle:{
+  modalTitle: {
     fontSize: 17,
     color: "white",
     paddingRight: 20,
     fontWeight: "500",
   },
-  modalGroupButton:{
+  modalGroupButton: {
     flexDirection: "row",
     justifyContent: "space-between",
     height: 50
   },
-  modalButtonReset:{
-    marginLeft:10,
-    marginTop:10,
-    borderRadius:5,
+  modalButtonReset: {
+    marginLeft: 10,
+    marginTop: 10,
+    borderRadius: 5,
     backgroundColor: "rgb(27, 168, 255)",
     width: "45%",
-    alignItems:"center",
-    justifyContent:"center"
+    alignItems: "center",
+    justifyContent: "center"
   },
-  modalButtonClose:{
-    marginRight:10,
-    marginTop:10,
-    borderRadius:5,
+  modalButtonClose: {
+    marginRight: 10,
+    marginTop: 10,
+    borderRadius: 5,
     backgroundColor: "rgb(27, 168, 255)",
     width: "45%",
-    alignItems:"center",
-    justifyContent:"center"
+    alignItems: "center",
+    justifyContent: "center"
   },
-  textReset:{
+  textReset: {
     color: "white",
     fontWeight: "500",
   },
-  textClose:{
+  textClose: {
     color: "white",
     fontWeight: "500",
   },

@@ -66,26 +66,19 @@ export default function OrderConfirmScreen() {
         if (selectedPayment.toString() === method_payments.CASH) {
 
             const dataResponse = await createOrder(API_POST_PATHS.tao_don_hang, order_data)
+            Alert.alert('Thông báo', 'Đặt hàng thành công', [{
+                text: 'OK',
+                onPress: () => {
+                    //=> xóa đi sản phẩm sẽ được mua
+                    dispatch(removeAllOrderProduct())
 
-            if (dataResponse) {
+                    // => xóa đi sản phẩm sẽ được mua trong giỏ hàng
+                    order_items.map(item => dispatch(removeCart(item.idv4)))
 
-                Alert.alert('Thông báo', 'Đặt hàng thành công', [{
-                    text: 'OK',
-                    onPress: () => {
-                        //=> xóa đi sản phẩm sẽ được mua
-                        dispatch(removeAllOrderProduct())
-
-                        // => xóa đi sản phẩm sẽ được mua trong giỏ hàng
-                        order_items.map(item => dispatch(removeCart(item.idv4)))
-
-                        //=> chuyển hướng đến Trang Chủ
-                        navigation.navigate('Main')
-                    }
-                }])
-
-            } else {
-                Alert.alert('Thông báo', 'Đặt hàng thất bại')
-            }
+                    //=> chuyển hướng đến Trang Chủ
+                    navigation.navigate('Main')
+                }
+            }])
 
         }
 

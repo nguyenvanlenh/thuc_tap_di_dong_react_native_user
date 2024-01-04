@@ -66,7 +66,7 @@ export const sendNotifications = async (title, body, token) => {
 
         if (response.ok) {
             const responseData = await response.json();
-            console.log('Notification sent successfully:', responseData);
+            // console.log('Notification sent successfully:', responseData);
         } else {
             console.error('Error sending notification:', response.statusText);
         }

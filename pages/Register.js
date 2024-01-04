@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import { auth, database } from '../firebaseConfig';
 import { createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { push, ref, set } from 'firebase/database';
+import { API_AUTH } from '../services/PathApi';
 
 const { width } = Dimensions.get('window');
 export default function Register() {
@@ -14,29 +15,63 @@ export default function Register() {
     const [passwordPre, setPasswordPre] = useState('');
     const navigation = useNavigation()
 
-    const handleSignUp = () => {
-        // Xử lý logic đăng ký ở đây
-        if (email !== '' && password !== '') {
-            if (password === passwordPre) {
-
-                createUserWithEmailAndPassword(auth, email, password)
-                    .then((userCredential) => {
-                        const user = userCredential.user;
-                        const usersListRef = ref(database, `users/${auth?.currentUser?.uid}/`);
-                        // var timestamp = createdAt.getTime();
-                        set(usersListRef, {
-                            id: user.uid,
-                            email: user.email,
-                            username: username
-                        });
-                        navigation.navigate("Login")
-                    })
-                    .catch((err) => Alert.alert("Login error", err.message));
-            } else {
-                Alert.alert("Mật khẩu không đúng", "Mật khẩu không giống nhau")
-            }
-
+    const handleSignUp = async () => {
+        // Validation checks
+        if (!email || !username || !password || !passwordPre) {
+            Alert.alert('Thông báo', 'Vui lòng điền đầy đủ thông tin');
+            return;
         }
+
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            Alert.alert('Thông báo', 'Địa chỉ email không hợp lệ');
+            return;
+        }
+
+        if (password.length < 6) {
+            Alert.alert('Thông báo', 'Mật khẩu phải có ít nhất 6 ký tự');
+            return;
+        }
+
+        if (password !== passwordPre) {
+            Alert.alert('Thông báo', 'Mật khẩu nhập lại không khớp');
+            return;
+        }
+        // Send registration request
+        const response = await fetch(API_AUTH.register, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                fullName: username,
+                username: email,
+                password,
+            }),
+        });
+        // Check the response for OK
+        const responseData = await response.json();
+        console.log("data: ", responseData?.status);
+        if (responseData?.status === 'Faild') {
+            Alert.alert('Lỗi', 'Email đã tồn tại!');
+            return;
+        }
+        createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                const usersListRef = ref(database, `users/${auth?.currentUser?.uid}/`);
+                // var timestamp = createdAt.getTime();
+                set(usersListRef, {
+                    id: user.uid,
+                    email: user.email,
+                    username: username
+                });
+                navigation.navigate("Login")
+            })
+            .catch((err) => Alert.alert("Lỗi", err.message));
+
+        // Show success message or navigate to another screen
+        Alert.alert('Thành công', 'Đăng ký thành công!');
+        navigation.navigate('Login');
     };
 
     return (

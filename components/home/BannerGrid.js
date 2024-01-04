@@ -1,7 +1,7 @@
 import React from "react";
-import {Image, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
-import {Dimensions} from "react-native";
-export default function BannerGrid(){
+import { Image, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions } from "react-native";
+export default function BannerGrid() {
     const imageList = [
         require('../../assets/BannerSquare/1.jpg'),
         require('../../assets/BannerSquare/2.jpg'),
@@ -15,9 +15,9 @@ export default function BannerGrid(){
         require('../../assets/BannerSquare/10.jpg'),
     ];
     const randomImages = getRandomImages(imageList, 6);
-    return(
+    return (
         <View style={styles.container}>
-            {randomImages.map((image, index) =>(
+            {randomImages.map((image, index) => (
                 <View key={index}>
                     <TouchableOpacity style={styles.element}>
                         <Image

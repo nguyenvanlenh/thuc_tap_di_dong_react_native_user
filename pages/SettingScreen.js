@@ -6,12 +6,14 @@ import { useDispatch } from 'react-redux';
 import { removeUser } from '../redux/slices/AuthSlice';
 import { signOut } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
+import { removeUserAPI } from '../redux/slices/UserSlice';
 
 function SettingScreen() {
   const navigation = useNavigation()
   const dispatch = useDispatch()
   const handleLogout = () => {
     dispatch(removeUser())
+    dispatch(removeUserAPI())
     signOut(auth)
     // Thoát khỏi trang và đặt nó làm trang mặc định
     navigation.dispatch(
@@ -23,7 +25,6 @@ function SettingScreen() {
   }
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
       <Button title="Đăng xuất" onPress={handleLogout} />
     </View>
   )
