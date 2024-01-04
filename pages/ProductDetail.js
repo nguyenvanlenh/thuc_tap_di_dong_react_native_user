@@ -31,7 +31,7 @@ export const ProducDetail = ({ navigation }) => {
 
   const handleSeeMoreComments = () => {
     setVisibleComments(
-      visibleComments === fakeData.length ? 3 : fakeData.length
+      visibleComments === listComment.length ? 3 : listComment.length
     );
   };
 
