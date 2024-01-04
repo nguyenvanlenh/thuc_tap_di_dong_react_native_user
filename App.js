@@ -30,8 +30,10 @@ import HistoryViewProduct from "./pages/HistoryViewProduct";
 import { AppState } from "react-native";
 
 import { addHistory } from "./redux/slices/HistoryView";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import MessageAdminScreen from "./pages/MessageAdminScreen";
 import { SpeechVoice } from "./pages/SpeechVoice";
-
 function App() {
   const Stack = createNativeStackNavigator();
 
@@ -48,11 +50,11 @@ function App() {
             store.dispatch(addCart(item));
           });
         }
-        if (history) {
-          history.forEach((item) => {
-            store.dispatch(addHistory(item));
-          });
-        }
+        // if (history) {
+        //   history.forEach((item) => {
+        //     store.dispatch(addHistory(item));
+        //   });
+        // }
 
         // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
         const storedInfoAddress = await getInfoAddressFromAsyncStorage();
@@ -63,7 +65,19 @@ function App() {
 
         const storedInfoPayment = await getMethodPaymentFromAsyncStorage()
         if (storedInfoPayment) store.dispatch(setSelectedPayment(storedInfoPayment))
+        // Lắng nghe sự kiện AppState để xử lý khi ứng dụng chuyển sang trạng thái background hoặc inactive
+        const handleAppStateChange = (nextAppState) => {
+          if (nextAppState.match(/inactive|background/)) {
+            // Ứng dụng chuyển sang trạng thái background hoặc inactive
 
+            // Lấy dữ liệu giỏ hàng từ Redux store
+            const cartRedux = store.getState().carts;
+
+            // Lưu giỏ hàng xuống AsyncStorage
+            saveCartToAsyncStorage(cartRedux);
+
+          }
+        };
 
 
         // Đăng ký lắng nghe sự kiện
@@ -73,6 +87,7 @@ function App() {
         return () => {
           AppState.removeEventListener('change', handleAppStateChange);
         };
+
       } catch (error) {
         console.error(error);
       }
@@ -80,10 +95,13 @@ function App() {
 
     fetchData();
   }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
+
         <Stack.Navigator initialRouteName="HistorySell">
+
           <Stack.Screen
             name="Main"
             component={MainContainer}
@@ -220,11 +238,27 @@ function App() {
               },
               headerTintColor: 'white',
             }} />
-
-
+          <Stack.Screen name="Login" component={Login}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="Register" component={Register}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="MessageAdmin" component={MessageAdminScreen}
+            options={{
+              title: 'Tin nhắn',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colors.blueRoot,
+              },
+              headerTintColor: 'white',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+    </Provider >
   );
 
 }

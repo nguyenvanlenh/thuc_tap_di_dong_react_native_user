@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {API_GET_PATHS} from "../services/PathApi";
+import { API_GET_PATHS } from "../services/PathApi";
 
 export const useFetchData = (type) => {
     const [data, setData] = useState([]);
@@ -9,9 +9,9 @@ export const useFetchData = (type) => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch(API_GET_PATHS.lay_ds_ao+`${type}`+"?page=" +
-                        `${page}` +
-                        "&pageSize=3");
+            const response = await fetch(API_GET_PATHS.lay_ds_ao + `${type}` + "?page=" +
+                `${page}` +
+                "&pageSize=3");
             const newData = await response.json();
             setData((prevData) => [...prevData, ...newData.data]);
             setPage((prevPage) => prevPage + 1);
@@ -47,7 +47,7 @@ export const useFetchDataSuggested = () => {
     const fetchData = async () => {
         try {
             setLoading(true);
-            const response = await fetch(API_GET_PATHS.lay_ds_ao_all+ "?page=" +
+            const response = await fetch(API_GET_PATHS.lay_ds_ao_all + "?page=" +
                 `${page}`);
             const newData = await response.json();
             setData((prevData) => [...prevData, ...newData.data]);

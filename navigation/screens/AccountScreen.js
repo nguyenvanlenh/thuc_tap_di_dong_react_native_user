@@ -1,4 +1,4 @@
-import { ScrollView, StatusBar, TextBase } from 'react-native';
+import { Button, ScrollView, StatusBar, TextBase } from 'react-native';
 import { useIsFocused, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react'; // Import useEffect từ react thay vì componentWillUnmount
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
@@ -6,8 +6,12 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { colors } from '../../theme';
 import { WINDOW_HEIGHT } from '../../utils/Utils';
 import CartIcon from '../../components/CartIcon';
+import { useSelector } from 'react-redux';
 
 function AccountScreen() {
+  const auth = useSelector(state => state.auth)
+  const user = useSelector(state => state.user)
+  console.log("account: ", user);
   const navigation = useNavigation();
   const isFocused = useIsFocused(); // Sử dụng useIsFocused để kiểm tra màn hình này có đang được tập trung hay không
   useEffect(() => {
@@ -54,24 +58,47 @@ function AccountScreen() {
                 <Ionicons style={styles.iconPencil} name="pencil-outline" size={8} color="#fff" />
               </TouchableOpacity>
               <View style={styles.containerName}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Text style={{ fontSize: 18, fontWeight: 600 }}>Muleup Nguyen</Text>
-                  <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
-                </View>
-                <TouchableOpacity
-                  onPress={() => navigation.navigate('Setting')}
-                  style={styles.addName}
-                >
-                  <Ionicons name="add-outline" size={14} color="#000" />
-                  <Text style={{ fontSize: 12 }}>Thêm nickname</Text>
-                </TouchableOpacity>
-                <Text style={{ marginTop: 12, padding: 4, backgroundColor: '#dcdcdc', borderRadius: 14, fontSize: 14, width: 90, textAlign: 'center' }}>Khách hàng</Text>
+                {
+                  user?.user ?
+                    (<>
+                      <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                        <Text style={{ fontSize: 18, fontWeight: 600 }}>{user?.user?.fullName}</Text>
+                        <Ionicons style={{ marginLeft: 4, paddingTop: 3 }} name="chevron-forward-outline" size={18} color="#000" />
+                      </View>
+                      <TouchableOpacity
+                        onPress={() => navigation.navigate('Setting')}
+                        style={styles.addName}
+                      >
+                        <Ionicons name="add-outline" size={14} color="#000" />
+                        <Text style={{ fontSize: 12 }}>Thêm nickname</Text>
+                      </TouchableOpacity>
+                      <Text style={{ marginTop: 12, padding: 4, backgroundColor: '#dcdcdc', borderRadius: 14, fontSize: 14, width: 90, textAlign: 'center' }}>Khách hàng</Text>
+                    </>
+                    ) :
+                    (
+                      <View>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          <Text style={{ fontSize: 16, fontWeight: 600 }}>Chào mừng bạn đến với Tiki</Text>
+                        </View>
+                        <TouchableOpacity
+                          onPress={() => navigation.navigate('Login')}
+                        >
+                          <Text style={styles.textLogin}>
+                            Đăng nhập/tạo tài khoản</Text>
+                        </TouchableOpacity>
+                      </View>
+                    )
+                }
+
+
               </View>
             </View>
           </View>
           <View style={styles.containerMySevice}>
             <TouchableOpacity
+
              onPress={() => navigation.navigate('HistorySell', { status: 0})}
+
             >
               <View style={styles.containerTitle}>
                 <Text style={{ fontSize: 16 }}>Đơn hàng của tôi</Text>
@@ -81,7 +108,9 @@ function AccountScreen() {
 
             <View style={styles.listIconOrder}>
               <TouchableOpacity
+
                 onPress={() => navigation.navigate('HistorySell', { status: 1 })}
+
                 style={styles.itemIconOrder}>
                 <View style={styles.containerIcon}>
                   <Ionicons name="wallet-outline" size={20} color={colors.blueRoot}></Ionicons>
@@ -90,7 +119,9 @@ function AccountScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.itemIconOrder}
+
                  onPress={() => navigation.navigate('HistorySell', { status: 2 })}
+
               >
                 <View style={styles.containerIcon}>
                   <Ionicons name="file-tray-stacked-outline" size={20} color={colors.blueRoot}></Ionicons>
@@ -99,7 +130,9 @@ function AccountScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.itemIconOrder}
+
                 onPress={() => navigation.navigate('HistorySell', { status: 3 })}
+
               >
                 <View style={styles.containerIcon}>
                   <Ionicons name="car-outline" size={20} color={colors.blueRoot}></Ionicons>
@@ -108,8 +141,10 @@ function AccountScreen() {
               </TouchableOpacity>
 
               <TouchableOpacity style={styles.itemIconOrder}
+
  onPress={() => navigation.navigate('HistorySell', { status: 4})}
               
+
               >
                 <View style={styles.containerIcon}>
                   <Ionicons name="checkbox-outline" size={20} color={colors.blueRoot}></Ionicons>
@@ -158,7 +193,7 @@ function AccountScreen() {
 
             <View style={styles.listIconOrder}>
               <TouchableOpacity
-                 onPress={() => navigation.navigate('HistoryViewProduct')}
+                onPress={() => navigation.navigate('HistoryViewProduct')}
                 style={styles.itemIconOrder}>
                 <View style={styles.containerIconSeen}>
                   <Ionicons name="eye" size={20} color={colors.green}></Ionicons>
@@ -344,6 +379,16 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 12
   },
+  textLogin: {
+    borderWidth: 1,
+    borderColor: colors.blueRoot,
+    borderStyle: 'solid',
+    padding: 8,
+    textAlign: 'center',
+    marginVertical: 16,
+    borderRadius: 5,
+    color: colors.blueRoot
+  }
 });
 
 export default AccountScreen;

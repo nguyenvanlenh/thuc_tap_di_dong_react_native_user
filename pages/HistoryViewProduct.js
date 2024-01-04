@@ -41,11 +41,17 @@ const HistoryViewProduct = () => {
                             }
                         >
                             <View style={styles.imageProductWrap}>
-                                <Image
-                                    source={{ uri: `${item.list_image[0].path_image}` }}
-                                    style={styles.imageProduct}
-                                />
+                                {item.list_image && item.list_image.length > 0 && item.list_image[0] && item.list_image[0].path_image ? (
+                                    <Image
+                                        source={{ uri: `${item.list_image[0].path_image}` }}
+                                        style={styles.imageProduct}
+                                    />
+                                ) : (
+                                    // Display a placeholder or handle the absence of the image
+                                    <Text>No image available</Text>
+                                )}
                             </View>
+
                             <View style={styles.titleProductWrap}>
                                 <Text
                                     numberOfLines={2}
