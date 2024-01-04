@@ -27,7 +27,7 @@ function HomeScreen() {
                         <ElementProduct title={"Sản phẩm bán chạy"} type={"ds-ao-da-banh-hot"}></ElementProduct>
                         <ElementProduct title={"Sản phẩm mới"} type={"ds-ao-da-banh-moi"}></ElementProduct>
                         <ElementProduct title={"Sản phẩm khuyến mãi"} type={"ds-ao-da-banh-khuyen-mai"}></ElementProduct>
-                        <SuggestedProduct data={data}></SuggestedProduct>
+                        {/*<SuggestedProduct data={data}></SuggestedProduct>*/}
                     </View>
                 </View>
             </ScrollView>
