@@ -4,14 +4,22 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, TextInput } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { API_GET_PATHS } from '../../services/PathApi';
 
 const HistorySell = () => {
   const [purchaseHistory, setPurchaseHistory] = useState([]);
   const [filteredHistory, setFilteredHistory] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  let [status, setStatus] = useState(null);
 
   const navigation = useNavigation();
+
+ 
+  
+  // const status = route.params.status;
+  // status = 1;
+
 
   // Lấy dữ liệu từ API khi mở ứng dụng
   useEffect(() => {
@@ -23,20 +31,21 @@ const HistorySell = () => {
    fetchData(searchQuery);
   }, [searchQuery]);
 
-  // Hàm lấy dữ liệu từ API dựa trên số điện thoại
+  // Hàm lấy dữ liệu từ API
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `http://tmt020202ccna-001-site1.atempurl.com/api/history/lich-su-mua-hang?phoneNumber=${searchQuery}&page=1&pageSize=9`
+        status ? `${API_GET_PATHS.lich_su_mua_hang_status}${status}` : `${API_GET_PATHS.lich_su_mua_hang_phone}${searchQuery}`
       );
+      console.log(response)
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
       const jsonData = await response.json();
-      if (jsonData.succeeded) {
         setPurchaseHistory(jsonData.data);
         setFilteredHistory(jsonData.data); // Set filtered data initially with all orders
-      } else {
-
-       
-      }
+        console.log(jsonData.data);
+     
       setIsLoading(false);
     } catch (error) {
       
@@ -61,10 +70,10 @@ const HistorySell = () => {
         <Text style={styles.productTitle}>{item.name_status_order}</Text>
         <View style={styles.purchaseInfo}>
           <Text style={styles.purchaseText}>
-            Mã đơn hàng: <Text style={styles.purchaseValue}>{item.id_order}</Text>
+            Mã đơn hàng: <Text style={styles.purchaseValue}>{item.idOrder}</Text>
           </Text>
           <Text style={styles.purchaseText}>
-            Thời gian: <Text style={styles.purchaseValue}>{item.time_order}</Text>
+            Thời gian: <Text style={styles.purchaseValue}>{item.timeOrder}</Text>
           </Text>
         </View>
       </View>
@@ -72,7 +81,7 @@ const HistorySell = () => {
 
         <TouchableOpacity style={styles.detailButton} onPress={() =>
       navigation.navigate("OrderDetail", {
-      orderId: item.id_order,
+      orderId: item.idOrder,
       phone : searchQuery,
       })}>
           <Text style={styles.buttonText}>Xem chi tiết</Text>
@@ -108,7 +117,7 @@ const HistorySell = () => {
       ) : (
         <FlatList
           data={filteredHistory}
-          keyExtractor={(item) => item.id_order.toString()}
+          keyExtractor={(item) => item.idOrder.toString()}
           renderItem={renderPurchaseItem}
         />
       )}

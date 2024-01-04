@@ -83,7 +83,7 @@ function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator >
+        <Stack.Navigator initialRouteName="HistorySell">
           <Stack.Screen
             name="Main"
             component={MainContainer}
