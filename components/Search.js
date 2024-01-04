@@ -11,11 +11,9 @@ const Search = () => {
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
-
             const response = await fetch(
                 API_GET_PATHS.tim_kiem_san_pham +
-                `${searchQuery}` + "&quantity=4"
-
+                `${searchQuery}` + "&size=4"
             );
 
             const jsonData = await response.json();
@@ -61,21 +59,29 @@ const Search = () => {
                 <Ionicons name="mic-outline" size={26} color={'#aaa'} onPress={() =>
                     navigation.navigate('SpeechVoice')}></Ionicons>
             </View>
-            <View>{searchQuery !== '' ? (data.map((item) => (
-                <TouchableOpacity
-                    style={styles.productItem}
-                    key={item.id_product}
-                    onPress={() =>
-                        navigation.navigate("SearchResult", {
-                            query: item.name_product,
-                        })
-                    }
-                >
+            <View>
+                {Array.isArray(data) && data.length > 0 ? (
+                    data.map((item) => (
+                        <TouchableOpacity
+                            style={styles.productItem}
+                            key={item.id_product}
+                            onPress={() =>
+                                navigation.navigate("SearchResult", {
+                                    query: item.name_product,
+                                })
+                            }
+                        >
+                            <Text style={styles.placeholder_search}>
+                                <Ionicons name="search-circle-outline" size={16} color={'#aaa'} /> {item.name_product}
+                            </Text>
+                            <Text style={styles.line}></Text>
+                        </TouchableOpacity>
+                    ))
+                ) : (
+                    <Text>No data available</Text>
+                )}
+            </View>
 
-                    <Text style={styles.placeholder_search}><Ionicons name="search-circle-outline" size={16} color={'#aaa'} /> {item.name_product}</Text>
-                    <Text style={styles.line}></Text>
-                </TouchableOpacity>
-            ))) : <Text></Text>}</View>
 
             <View style={styles.suggest1}>
                 <Text>Áo đội tuyển Việt Nam</Text>
@@ -252,7 +258,7 @@ const styles = StyleSheet.create({
     headerSearch: {
         alignItems: "center",
         height: 60,
-        marginTop: 50,
+        marginTop: 20,
         marginVertical: 0,
         flexDirection: 'row',
         backgroundColor: '#fff'

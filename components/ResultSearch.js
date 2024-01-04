@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
 
-import { View, Text, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, Image, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import { Dimensions } from 'react-native';
@@ -10,14 +10,16 @@ import { useState } from 'react';
 import { API_GET_PATHS } from '../services/PathApi';
 import { formatCurrency } from '../utils/Utils';
 const ResultSearch = ({ route }) => {
+
   // Lấy dữ liệu từ params
-  const searchQuery = route.params?.query || 'Không có dữ liệu tìm kiếm';
+  const [content, setContent] = useState(route.params?.query || 'Không có dữ liệu tìm kiếm');
+
   const [data, setData] = useState([]);
   // gọi api để lấy dữ liệu
   const fetchData = async () => {
     try {
       const response = await fetch(
-        API_GET_PATHS.tim_kiem_san_pham + `${searchQuery}`
+        API_GET_PATHS.tim_kiem_san_pham + `${content}`
       );
       const jsonData = await response.json();
       console.log("a " + jsonData)
@@ -29,15 +31,27 @@ const ResultSearch = ({ route }) => {
   };
   useEffect(() => {
     // Gọi hàm tìm kiếm mỗi khi giá trị của input thay đổi
+    setContent(content)
     fetchData()
 
-  }, [searchQuery]);
+  }, [content]);
 
   const navigation = useNavigation();
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Header></Header>
+        <View style={styles.headerSearch}>
+          <Ionicons style={styles.icon_back} name="arrow-back-outline" size={26} color={'#aaa'} onPress={() => navigation.goBack()} />
+          <TextInput
+            placeholder="Bạn muốn tìm gì!!"
+            style={styles.searchTextInput}
+            editable={true}
+            onChangeText={(text) => setContent(text)}
+            onSubmitEditing={() => fetchData()}
+          />
+          <Ionicons name="mic-outline" size={26} color={'#aaa'} onPress={() =>
+            navigation.navigate('SpeechVoice')}></Ionicons>
+        </View>
         <View style={styles.fillter}>
           <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>Phổ biến</Text>
@@ -59,36 +73,43 @@ const ResultSearch = ({ route }) => {
 
         <View style={styles.listProduct}>
 
-          {data.map((item) => (
-            <TouchableOpacity
-              style={styles.productItem}
-              key={item.id_product}
-              onPress={() =>
-                navigation.navigate("ProductDetail", {
-                  productId: item.id_product,
-                })
-              }
-            >
-              <View style={styles.imageProductWrap}>
-                <Image
-                  source={{ uri: `${item.list_image[0].path_image}` }}
-                  style={styles.imageProduct}
-                />
-              </View>
-              <View style={styles.titleProductWrap}>
-                <Text
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                  style={styles.titleProduct}
-                >
-                  {item.name_product}
-                </Text>
-              </View>
-              <View style={styles.priceProductWrap}>
-                <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
+          {Array.isArray(data) && data.length > 0 ? (
+            data.map((item) => (
+              <TouchableOpacity
+                style={styles.productItem}
+                key={item.id_product}
+                onPress={() =>
+                  navigation.navigate("ProductDetail", {
+                    productId: item.id_product,
+                  })
+                }
+              >
+                <View style={styles.imageProductWrap}>
+                  {item.list_image[0] && item.list_image[0].path_image && (
+                    <Image
+                      source={{ uri: item.list_image[0].path_image }}
+                      style={styles.imageProduct}
+                    />
+                  )}
+                </View>
+
+                <View style={styles.titleProductWrap}>
+                  <Text
+                    numberOfLines={2}
+                    ellipsizeMode="tail"
+                    style={styles.titleProduct}
+                  >
+                    {item.name_product}
+                  </Text>
+                </View>
+                <View style={styles.priceProductWrap}>
+                  <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
+                </View>
+              </TouchableOpacity>
+            ))
+          ) : (
+            <Text>No data available</Text>
+          )}
         </View>
       </View>
     </ScrollView>
@@ -202,7 +223,28 @@ const styles = StyleSheet.create({
     color: 'blue',
     backgroundColor: '#ccc',
     marginVertical: 10
-  }
+  }, headerSearch: {
+    alignItems: "center",
+    height: 60,
+    marginTop: 20,
+    marginVertical: 0,
+    flexDirection: 'row',
+    backgroundColor: '#fff'
+  },
+  searchTextInput: {
+    borderWidth: 0,
+    paddingVertical: 8,
+    margin: 0,
+    marginLeft: 8,
+    // outlineWidth: 0, // Tương đương với outline: 0px;
+    width: "80%",
+    padding: 0,
+    fontWeight: "400", // Tương đương với font-weight: 400;
+    fontSize: 14,
+    color: '#AAAAAA'
+
+  },
+
 });
 
 export default ResultSearch;

@@ -35,9 +35,16 @@ export const ItemEvaluate = ({ data }) => {
         <Text>{data.content}</Text>
       </View>
       <View style={styles.horizontal}>
-        <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
-          {data.user.fullname ? data.user.fullname : "Nguyễn Văn Lênh"}
-        </Text>
+        {data.user && data.user.fullname ?
+          <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
+            {data.user.fullname}
+          </Text>
+          :
+          <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
+            Nguyễn Văn Lênh
+          </Text>
+        }
+
         <Text
           style={{
             backgroundColor: colors.borderGray,

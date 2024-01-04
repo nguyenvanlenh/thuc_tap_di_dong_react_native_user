@@ -38,3 +38,61 @@ export const calculateDiscountPercentage = (listedPrice, promotionalPrice) => {
 
     return roundedPercentage + "%";
 };
+
+export const sendNotifications = async (title, body, token) => {
+    const apiUrl = 'https://exp.host/--/api/v2/push/send';
+    const pushToken = token; // Replace with your actual push token
+
+    const headers = {
+        'host': 'exp.host',
+        'accept': 'application/json',
+        'accept-encoding': 'gzip, deflate',
+        'content-type': 'application/json',
+    };
+
+    const payload = {
+        to: pushToken,
+        title: title,
+        sound: 'default',
+        body: body,
+    };
+
+    try {
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(payload),
+        });
+
+        if (response.ok) {
+            const responseData = await response.json();
+            console.log('Notification sent successfully:', responseData);
+        } else {
+            console.error('Error sending notification:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Error sending notification:', error.message);
+    }
+};
+export const GENERATE_QR_KEY_PRODUCT = 'TIKI_';
+
+export const generateQRKeyFromID = (id) => {
+    return GENERATE_QR_KEY_PRODUCT + id;
+};
+
+export const decryptKeyIdProductFromDataQRScanned = (value) => {
+    // Assuming the ID is concatenated after the prefix
+    const idStartIndex = GENERATE_QR_KEY_PRODUCT.length;
+
+    // Check if the value has the correct prefix
+    if (value.startsWith(GENERATE_QR_KEY_PRODUCT)) {
+        // Extract the ID from the value
+        const id = value.slice(idStartIndex);
+        return id;
+    } else {
+        // Handle invalid QR code format
+        console.error('Invalid QR code format');
+        return null;
+    }
+};
+
