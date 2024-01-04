@@ -22,8 +22,11 @@ export const API_GET_PATHS = {
     tim_kiem_san_pham: `${BASE_URL}/api/products/search?name=`,
     danh_gia_san_pham: `${BASE_URL}/api/comment`,
 
-    chi_tiet_don_hang: `${BASE_URL}/api/order/infor-order?`,
-    lich_su_mua_hang: `${BASE_URL}/api/history/lich-su-mua-hang?`
+    chi_tiet_don_hang: `${BASE_URL}/api/order-details/`,
+    lich_su_mua_hang: `${BASE_URL}/api/orders/all`,
+    lich_su_mua_hang_phone: `${BASE_URL}/api/orders?phoneNumbers=`,
+    lich_su_mua_hang_status: `${BASE_URL}/api/orders/status?status=`,
+    lay_don_hang: `${BASE_URL}/api/orders/`,
 }
 
 
