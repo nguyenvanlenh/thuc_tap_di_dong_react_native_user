@@ -13,7 +13,9 @@ export const API_GET_PATHS = {
 
     lay_ds_do_puma_nam: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nam?`,
     lay_ds_do_puma_nu: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nu?`,
-    // --------------------
+
+    lay_ds_loc:`${BASE_URL}/api/products/filter?`,
+// --------------------
 
     lay_ds_san_pham_theo_ten: `${BASE_URL}/api/products/ds-san-pham?`,
     lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product/`,
