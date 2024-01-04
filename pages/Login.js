@@ -9,6 +9,8 @@ import { setUser } from '../redux/slices/AuthSlice';
 
 import { ref, set } from 'firebase/database';
 import { usePushNotifications } from '../usePushNotifications';
+import { API_AUTH } from '../services/PathApi';
+import { setUserAPI } from '../redux/slices/UserSlice';
 const { width } = Dimensions.get('window');
 export default function Login() {
     const { expoPushToken } = usePushNotifications();
@@ -16,28 +18,56 @@ export default function Login() {
     const [password, setPassword] = useState('');
     const navigation = useNavigation();
     const dispatch = useDispatch()
-    const handleLogin = () => {
+    const handleLogin = async () => {
         // Xử lý logic đăng nhập ở đây
-        if (email !== "" && password !== "") {
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    const serializedUser = {
-                        uid: user.uid,
-                        email: user.email
-                    };
-                    const usersListRef = ref(database, `userTokens/${user.uid}/`);
-                    // var timestamp = createdAt.getTime();
-                    set(usersListRef, {
-                        token: expoPushToken?.data,
-                        email: user.email,
-                    });
-                    dispatch(setUser(serializedUser))
-                    // sendNotifications()
-                    navigation.navigate("Main")
-                })
-                .catch((err) => Alert.alert("Login error", err.message));
+        if (!/\S+@\S+\.\S+/.test(email)) {
+            Alert.alert('Thông báo', 'Địa chỉ email không hợp lệ');
+            return;
         }
+
+        if (password.length < 6) {
+            Alert.alert('Thông báo', 'Mật khẩu phải có ít nhất 6 ký tự');
+            return;
+        }
+        const response = await fetch(API_AUTH.login, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                username: email,
+                password,
+            }),
+        });
+        // Check the response for OK
+        const responseData = await response.json();
+        if (responseData?.status === 'Faild') {
+            Alert.alert('Lỗi', 'Tài khoản không tồn tại!');
+            return;
+        }
+        dispatch(setUserAPI(responseData?.data))
+        signInWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const user = userCredential.user;
+                const serializedUser = {
+                    uid: user.uid,
+                    email: user.email
+                };
+                const usersListRef = ref(database, `userTokens/${user.uid}/`);
+                // var timestamp = createdAt.getTime();
+                set(usersListRef, {
+                    token: expoPushToken?.data,
+                    email: user.email,
+                });
+                dispatch(setUser(serializedUser))
+
+            })
+            .catch((err) => {
+                Alert.alert("Login error", err.message)
+                return;
+            });
+
+        navigation.navigate("Main")
     };
 
     return (
