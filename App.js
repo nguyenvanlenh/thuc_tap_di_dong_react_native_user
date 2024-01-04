@@ -100,7 +100,7 @@ function App() {
     <Provider store={store}>
       <NavigationContainer>
 
-        <Stack.Navigator initialRouteName="HistorySell">
+        <Stack.Navigator initialRouteName="Login">
 
           <Stack.Screen
             name="Main"

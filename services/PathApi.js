@@ -1,5 +1,5 @@
 
-export const BASE_URL = 'https://okay-town-production.up.railway.app'
+export const BASE_URL = 'http://localhost:8080'
 
 export const API_GET_PATHS = {
     lay_ds_ao: `${BASE_URL}/api/products/`,
