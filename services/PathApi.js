@@ -31,7 +31,7 @@ export const API_GET_PATHS = {
 
 
 export const API_POST_PATHS = {
-    tao_don_hang: `${BASE_URL}/api/order/create-order`
+    tao_don_hang: `${BASE_URL}/api/create-order`
 }
 
 export const API_AUTH = {

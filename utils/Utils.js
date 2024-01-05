@@ -12,7 +12,18 @@ export const getFeedbackText = (star) => {
 };
 
 
-export const productDescription = 'Nike Air Force 1 Ra mắt vào năm 1982 bởi nhà thiết kế Bruce Kilgore, ngay lập tức mẫu giày Nike Air Force 1 (AF1) đã trở thành một ‘hit’ mạnh trên khắp thế giới khi ‘sold out’ ngay trong ngày đầu trình làng. Thiết kế mẫu giày Nike Air Force 1 được xem là đôi giày mang tính cách mạng trong thế giới sneaker,khi mà các nhà thiết kế kết hợp với các nhà khoa học cho ra mẫu giày có công nghệ ‘Air’ – một túi khí ở gót chân để đệm hỗ trợ.';
+export const productDescription = `CP01 mang đến một thiết kế mạnh mẽ, hiện đại, thể hiện sự khoẻ khoắn và đam mê của bạn đối với thể thao. Không chỉ là bộ trang phục, CP01 góp phần chinh phục thành công cùng bạn.
+
+- Form áo tôn dáng với hoạ tiết hai bên sườn áo tạo nên vẻ ngoài bản lĩnh và đầy cuốn hút.
+
+- Chất vải MD2 độc quyền được cải tiến, siêu nhẹ, thông thoáng, mang lại cảm giác thoải mái khi chơi bóng ở cường độ cao.
+
+- Bề mặt vải với cấu trúc caro, thoáng khí và mềm mát. Đặc biệt, chống nhăn giúp bạn tiết kiệm thời gian và công sức giặt ủi.
+
+- Phối vai nổi bật thể hiện đẳng cấp và sự tự tin của bạn.
+
+- Logo CP và nhãn lai được làm bằng silicone cao cấp, đảm bảo tính thẩm mỹ và độ bền cao.`
+
 // formart Tiền tệ
 export const formatCurrency = (value) => {
     // Kiểm tra nếu giá trị không phải là số
