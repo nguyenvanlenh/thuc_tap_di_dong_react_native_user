@@ -29,7 +29,7 @@ const ProductReview = () => {
   const handleSendComment = () => {
 
     const commentData = {
-      id_user: user,
+      id_user: user ? user : 1,
       id_product: id_product,
       star: rating,
       content: comment,

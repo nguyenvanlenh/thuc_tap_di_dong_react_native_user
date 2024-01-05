@@ -43,7 +43,7 @@ export const calculateDiscountPercentage = (listedPrice, promotionalPrice) => {
 
 export const getFeedbackStatus = (status) => {
     const feedbackTexts = ["Xác nhận ", "Đang Vận Chuyển", "Đang giao", "Đã nhận"];
-    return feedbackTexts[status];
+    return feedbackTexts[status - 1];
 };
 
 export const sendNotifications = async (title, body, token) => {
