@@ -18,7 +18,6 @@ export const SpeechVoice = () => {
     useEffect(() => {
         const authenticate = async () => {
             const result = await LocalAuthentication.authenticateAsync();
-            console.log(result);
             setIsAuthenticated(result.success);
         };
 
@@ -49,7 +48,6 @@ export const SpeechVoice = () => {
     Voice.onSpeechError = (err) => setRecognizedError(err.error);
 
     Voice.onSpeechResults = async (event) => {
-        console.log("12", event);
         const { value } = event;
         if (event) {
             setRecognizedText(value[0]);
