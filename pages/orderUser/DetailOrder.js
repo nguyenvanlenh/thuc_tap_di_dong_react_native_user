@@ -5,7 +5,7 @@ import { ProgressBar } from 'react-native-progress';
 import { API_GET_PATHS } from '../../services/PathApi';
 import { getFeedbackStatus } from '../../utils/Utils';
 
-
+import { colors } from '../../theme';
 const OrderDetailsScreen = ({ route }) => {
   const id = route.params?.id;
   const [data, setData] = useState(null);
@@ -38,7 +38,7 @@ const OrderDetailsScreen = ({ route }) => {
       );
 
       const jsonData = await response.json();
-//
+      //
       //    // Lấy dữ liệu từ cấp cao nhất
       // const inforOrder = jsonData.data.infor_order.status;
       // updateProgress(inforOrder);
@@ -47,7 +47,7 @@ const OrderDetailsScreen = ({ route }) => {
       // const orderValue = jsonData.data.orderValue;
       // const shipPrice = jsonData.data.shipPrice;
       // const totalPrice = jsonData.data.totalPrice;
-//
+      //
       // set data bằng dữ liệu lấy được
       setData(jsonData.data || []);
     } catch (error) {
@@ -132,19 +132,51 @@ const OrderDetailsScreen = ({ route }) => {
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <View style={styles.productList}>
               {data.list_order.map((item) => (
-                <TouchableOpacity onPress={() => console.log("Product Pressed")}>
-                  <View style={styles.productItem}>
-                    <Image
-                      source={{ uri: item.productDTO.list_image[0].path_image }}
-                      style={styles.productImage}
-                    />
-                    <Text style={styles.productTitle}>
-                      {item.productDTO.name_product} {"\n"} X  {item.quantity}    Size : {item.nameSize}
-                    </Text>
-                    <Text style={styles.textMuted}> {numberWithCommas(item.price)} đ</Text>
-                  </View>
-                </TouchableOpacity>
+                <View key={item} style={{
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  flexDirection: "row"
+                }}>
+                  <TouchableOpacity onPress={() => console.log("Product Pressed")}>
+                    <View style={styles.productItem}>
+                      {item.productDTO.list_image[0] && item.productDTO.list_image[0].path_image ? (
+                        <Image
+                          source={{ uri: item.productDTO.list_image[0].path_image }}
+                          style={styles.productImage}
+                        />
+                      ) : (
+                        <Text>No Image Available</Text>
+                      )}
+                      <Text style={styles.productTitle}>
+                        {item.productDTO.name_product} {"\n"} X {item.quantity} Size: {item.nameSize}
+                      </Text>
+                      <Text style={styles.textMuted}>{numberWithCommas(item.price)} đ</Text>
+                    </View>
+                  </TouchableOpacity>
 
+                  {
+                    data.status == 4 &&
+                    <TouchableOpacity
+                      onPress={() =>
+                        navigation.navigate("ProductReview", { id_product: item.productDTO.id_product })}
+                      style={{
+                        height: 50,
+                        borderWidth: 1,
+                        borderColor: colors.borderGray,
+                        padding: 10,
+                        backgroundColor: colors.blueRoot,
+                        borderRadius: 10
+
+                      }}
+
+                    >
+                      <Text style={{
+                        color: colors.white, alignItems: "center",
+                        alignContent: "center"
+                      }}>Đánh giá</Text>
+                    </TouchableOpacity>
+                  }
+                </View>
               ))}
             </View>
           </ScrollView>
@@ -260,7 +292,6 @@ const styles = StyleSheet.create({
 
   },
   productList: {
-    display: 'flex',
     flexDirection: 'row',
     marginBottom: 15,
 
