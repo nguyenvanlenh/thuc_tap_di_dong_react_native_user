@@ -35,9 +35,9 @@ export const ItemEvaluate = ({ data }) => {
         <Text>{data.content}</Text>
       </View>
       <View style={styles.horizontal}>
-        {data.user && data.user.fullname ?
+        {data.fullName ?
           <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
-            {data.user.fullname}
+            {data.fullName}
           </Text>
           :
           <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
