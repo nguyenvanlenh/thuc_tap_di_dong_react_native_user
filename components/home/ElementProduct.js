@@ -2,16 +2,15 @@ import {Image, ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react
 import {useState} from "react";
 import {useNavigation} from "@react-navigation/native";
 import {useFetchData} from "../../utils/LoadData";
+import Ionicons from "react-native-vector-icons/Ionicons";
 export default function ElementProduct({title, type}) {
     const { data, handleScroll } = useFetchData(type);
     const navigation = useNavigation();
     const [activeButton, setActiveButton] = useState(1);
     const buttons = [
-        { id: 1, label: "Button 1" },
-        { id: 2, label: "Button 2" },
-        { id: 3, label: "Button 3" },
-        { id: 4, label: "Button 4" },
-        { id: 5, label: "Button 5" },
+        { id: 1, label: "NIKE" },
+        { id: 2, label: "ADIDAS" },
+        { id: 3, label: "PUMA" },
     ];
     const handlePress = (buttonId) => {
         setActiveButton(buttonId);
@@ -75,15 +74,30 @@ export default function ElementProduct({title, type}) {
                             </View>
                             <View style={styles.titleProductWrap}>
                                 <Text
-                                    numberOfLines={2}
+                                    numberOfLines={1}
                                     ellipsizeMode="tail"
                                     style={styles.titleProduct}
                                 >
                                     {item.name_product}
                                 </Text>
                             </View>
+                            <View style={styles.starContainer}>
+                                {Array.from({ length: 5 }, (v, i) => (
+                                    <Ionicons
+                                        key={i}
+                                        name={
+                                            i < 5
+                                                ? "star"
+                                                : "star-outline"
+                                        }
+                                        color={
+                                            i < 5 ? "gold" : "gray"
+                                        }
+                                    />
+                                ))}
+                            </View>
                             <View style={styles.priceProductWrap}>
-                                <Text style={styles.priceProduct}>{item.listed_price}</Text>
+                                <Text style={styles.priceProduct}>{formatCurrency(item.listed_price)}</Text>
                             </View>
                         </TouchableOpacity>
                     ))}
@@ -92,6 +106,18 @@ export default function ElementProduct({title, type}) {
         </View>
     );
 }
+const formatCurrency = (value) => {
+    // Kiểm tra nếu giá trị không phải là số
+    if (isNaN(value)) {
+        return "Invalid input";
+    }
+
+    // Sử dụng hàm toLocaleString để định dạng số tiền thành chuỗi tiền tệ
+    return value.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+    });
+};
 const styles = StyleSheet.create({
     container: {
         paddingVertical: 12, // tương đương với padding-block trong CSS
@@ -116,9 +142,6 @@ const styles = StyleSheet.create({
         color: '#27272a', // Màu tương ứng với rgb(39, 39, 42)
     },
     //-------------------------------------------------------------------
-    horizontalScrollContainer: {
-        // Add any container styles here
-    },
     productTabContainer: {
         flexDirection: 'row',
         gap: 8,
@@ -211,6 +234,10 @@ const styles = StyleSheet.create({
         lineHeight: 18, // line-height: 150% (12 * 1.5 = 18);
         color: 'rgb(39, 39, 42)', // color: rgb(39, 39, 42);
         margin: 0, // margin: 0px;
+    },
+    starContainer: {
+        paddingHorizontal: 8,
+        flexDirection: "row",
     },
     priceProductWrap:{
         paddingHorizontal: 8,

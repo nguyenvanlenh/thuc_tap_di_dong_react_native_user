@@ -24,9 +24,9 @@ function HomeScreen() {
                 <View style={styles.main}>
                     <View style={styles.mainFormat}>
                         <BannerGrid></BannerGrid>
-                        <ElementProduct title={"Sản phẩm bán chạy"} type={"ds-giay-hot"}></ElementProduct>
-                        <ElementProduct title={"Sản phẩm mói"} type={"ds-giay-moi"}></ElementProduct>
-                        <ElementProduct title={"Sản phẩm khuyến mãi"} type={"ds-giay-khuyen_mai"}></ElementProduct>
+                        <ElementProduct title={"Sản phẩm bán chạy"} type={"ds-ao-da-banh-adidas-nam"}></ElementProduct>
+                        <ElementProduct title={"Sản phẩm mới"} type={"ds-ao-da-banh-moi"}></ElementProduct>
+                        <ElementProduct title={"Sản phẩm khuyến mãi"} type={"ds-ao-da-banh-adidas-nu"}></ElementProduct>
                         <SuggestedProduct data={data}></SuggestedProduct>
                     </View>
                 </View>

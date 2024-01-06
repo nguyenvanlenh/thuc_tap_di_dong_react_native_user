@@ -21,94 +21,31 @@ import { useDispatch, useSelector } from "react-redux";
 import { useRoute } from "@react-navigation/native";
 import uuidv4 from "uuid/v4";
 import { addOrderProduct, removeAllOrderProduct } from "../redux/slices/OrderProductSlice";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { addHistory } from "../redux/slices/HistoryView";
+import { calculateDiscountPercentage, formatCurrency, productDescription } from "../utils/Utils";
+import { saveHistoryViewToAsyncStorage } from "../utils/localStorage";
+import { API_GET_PATHS } from "../services/PathApi";
 export const ProducDetail = ({ navigation }) => {
-  const fakeData = [
-    {
-      quantity_star: 5,
-      rank: "Cực kỳ hài lòng",
-      content: "Sản phẩm này rất tốt, tôi rất hài lòng!",
-      fullname: "Nguyễn Văn Lênh",
-    },
-    {
-      quantity_star: 4,
-      rank: "Hài lòng",
-      content: "Sản phẩm tốt, nhưng có vài điểm cần cải thiện.",
-      fullname: "Trần Thị Hương",
-    },
-    {
-      quantity_star: 3,
-      rank: "Bình thường",
-      content: "Sản phẩm ổn, không có gì nổi bật.",
-      fullname: "Lê Minh Hiếu",
-    },
-    {
-      quantity_star: 5,
-      rank: "Cực kỳ hài lòng",
-      content: "Sản phẩm chất lượng, đúng như mô tả.",
-      fullname: "Phạm Thị An",
-    },
-    {
-      quantity_star: 2,
-      rank: "Không hài lòng",
-      content: "Sản phẩm không đáp ứng mong đợi của tôi.",
-      fullname: "Nguyễn Văn Đông",
-    },
-    {
-      quantity_star: 4,
-      rank: "Hài lòng",
-      content: "Sản phẩm chất lượng, giá thành hợp lý.",
-      fullname: "Trần Văn Bình",
-    },
-    {
-      quantity_star: 1,
-      rank: "Rất không hài lòng",
-      content: "Sản phẩm gặp nhiều vấn đề kỹ thuật.",
-      fullname: "Lê Thị Thanh Hằng",
-    },
-    {
-      quantity_star: 3,
-      rank: "Bình thường",
-      content: "Sản phẩm tạm ổn, có thể cải thiện.",
-      fullname: "Nguyễn Văn Phương",
-    },
-    {
-      quantity_star: 5,
-      rank: "Cực kỳ hài lòng",
-      content: "Sản phẩm đẹp, giao hàng nhanh chóng.",
-      fullname: "Trần Đình Quang",
-    },
-    {
-      quantity_star: 4,
-      rank: "Hài lòng",
-      content: "Sản phẩm tốt, đáp ứng đúng mong đợi.",
-      fullname: "Phạm Thị Trang",
-    },
-  ];
-
   // xử lý hiển thị đánh giá
+  const [listComment, setListComment] = useState([]);
   const [visibleComments, setVisibleComments] = useState(3);
 
   const handleSeeMoreComments = () => {
     setVisibleComments(
-      visibleComments === fakeData.length ? 3 : fakeData.length
+      visibleComments === listComment.length ? 3 : listComment.length
     );
   };
 
   const quantity_sold = 500;
   const quantity_rating = 500;
   const [selectSize, setSelectSize] = useState(false);
-  const [selectedColor, setSelectedColor] = useState(false);
   const [size, setSize] = useState();
   const [color, setColor] = useState();
   const [productData, setProductData] = useState();
   const [quantity, setQuantity] = useState(1);
   const [idV4, setIdV4] = useState();
-  const [idV40, setIdV40] = useState();
-  const [viewedProducts, setViewedProducts] = useState([]);
   const route = useRoute();
-  const { productId } = route.params;
+
+  let { productId } = route.params ? route.params : 0;
 
   // redux
   const dispatch = useDispatch();
@@ -123,35 +60,7 @@ export const ProducDetail = ({ navigation }) => {
     setQuantity(existingCartItem ? existingCartItem.quantity + 1 : 1);
     setIdV4(existingCartItem && existingCartItem.idv4);
   }, [carts]);
-  const link =
-    "http://tmt020202ccna-001-site1.atempurl.com/api/products/infor-product?id=" +
-    productId;
-  // formart Tiền tệ
-  const formatCurrency = (value) => {
-    // Kiểm tra nếu giá trị không phải là số
-    if (isNaN(value)) {
-      return "Invalid input";
-    }
-
-    // Sử dụng hàm toLocaleString để định dạng số tiền thành chuỗi tiền tệ
-    return value.toLocaleString("vi-VN", {
-      style: "currency",
-      currency: "VND",
-    });
-  };
-  const calculateDiscountPercentage = (listedPrice, promotionalPrice) => {
-    // Kiểm tra nếu giá trị không phải là số
-    if (isNaN(listedPrice) || isNaN(promotionalPrice)) {
-      return "Invalid input";
-    }
-    // Tính phần trăm giảm giá
-    const discountPercentage =
-      ((listedPrice - promotionalPrice) / listedPrice) * 100;
-    // Làm tròn đến 2 chữ số thập phân
-    const roundedPercentage = Math.round(discountPercentage * 100) / 100;
-
-    return roundedPercentage + "%";
-  };
+  const link = API_GET_PATHS.lay_thong_tin_san_pham + productId;
 
   // xử lý thay đổi màu trên header
   const [scrollY] = useState(new Animated.Value(0));
@@ -165,64 +74,27 @@ export const ProducDetail = ({ navigation }) => {
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
     { useNativeDriver: false } // Make sure to set useNativeDriver to false
   );
-  // Lấy dữ liệu từ AsyncStorage khi component được mount
-  const getDataFromStorage = async () => {
-    try {
-      // Lấy dữ liệu từ AsyncStorage
 
-      console.log("H" + storedProducts)
-      // Nếu có dữ liệu, cập nhật state
-      if (storedProducts !== null) {
-        setViewedProducts(JSON.parse(storedProducts));
-      }
-    } catch (error) {
-      console.error('Error reading data from AsyncStorage:', error);
-    }
-  };
   // fetch data product
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(link);
-
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-
         const data = await response.json();
-
-        console.log(data)
-
         setProductData(data.data);
-        addToHistoryView(data.data)
+        setListComment(data.data.list_comment);
+        saveHistoryViewToAsyncStorage(data.data)
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
-
     fetchData();
 
   }, []);
-  const addToHistoryView = (productData) => {
-    const existingHistoryItem = history.find((item) => {
-      return item.id === productId;
-    })
-    const newCartItem = {
-      id: productData.id_product,
-      title: productData.name_product,
-      price: productData.listed_price,
-      discountPrice: productData.promotional_price,
-      size: size === undefined ? productData.list_size[0].name_size : size,
-      color: color ? "Trắng" : "Xanh",
-      quantity: 1,
-      path_img: productData ? productData.list_image[0].path_image : "",
-    };
-    if (!existingHistoryItem) {
 
-      // Nếu sản phẩm đã tồn tại trong giỏ hàng, thì cập nhật
-      dispatch(addHistory(newCartItem));
-    }
-  };
   const handleAddToCart = () => {
     const newCartItem = {
       id: productData.id_product,
@@ -277,7 +149,6 @@ export const ProducDetail = ({ navigation }) => {
 
     }
   };
-
   // nếu fecth chưa hết thì hiển thị loading..
   if (!productData) {
     return (
@@ -396,13 +267,7 @@ export const ProducDetail = ({ navigation }) => {
                 Thông tin sản phẩm
               </Text>
               <Text>
-                Nike Air Force 1 Ra mắt vào năm 1982 bởi nhà thiết kế Bruce
-                Kilgore, ngay lập tức mẫu giày Nike Air Force 1 (AF1) đã trở
-                thành một ‘hit’ mạnh trên khắp thế giới khi ‘sold out’ ngay
-                trong ngày đầu trình làng. Thiết kế mẫu giày Nike Air Force 1
-                được xem là đôi giày mang tính cách mạng trong thế giới sneaker,
-                khi mà các nhà thiết kế kết hợp với các nhà khoa học cho ra mẫu
-                giày có công nghệ ‘Air’ – một túi khí ở gót chân để đệm hỗ trợ.
+                {productDescription}
               </Text>
             </View>
 
@@ -438,7 +303,8 @@ export const ProducDetail = ({ navigation }) => {
                 </Text>
               </View>
               <TouchableOpacity
-                onPress={() => navigation.navigate("ProductReview")}
+                onPress={() =>
+                  navigation.navigate("ProductReview", { id_product: productData.id_product })}
                 style={{
                   borderWidth: 1,
                   borderColor: colors.borderGray,
@@ -449,19 +315,19 @@ export const ProducDetail = ({ navigation }) => {
                 <Text>Đánh giá</Text>
               </TouchableOpacity>
               <View>
-                {fakeData
-                  ? fakeData.slice(0, visibleComments).map((e, i) => {
-                    return <ItemEvaluate key={i} data={e} />;
+                {listComment
+                  ? listComment.slice(0, visibleComments).map((e, i) => {
+                    return <ItemEvaluate key={i} data={e} />
                   })
                   : "Không có bình luận nào"}
 
-                {fakeData.length > 3 && (
+                {listComment.length > 3 && (
                   <TouchableOpacity
                     style={styles.btnMore}
                     onPress={handleSeeMoreComments}
                   >
                     <Text>
-                      {visibleComments === fakeData.length
+                      {visibleComments === listComment.length
                         ? "Thu nhỏ"
                         : "Xem thêm"}
                     </Text>

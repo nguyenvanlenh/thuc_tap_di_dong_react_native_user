@@ -8,35 +8,43 @@ import {
 } from "react-native";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { colors } from "../../../theme";
+import { getFeedbackText } from "../../../utils/Utils";
 
 export const ItemEvaluate = ({ data }) => {
   const [showCommentInput, setShowCommentInput] = useState(false);
   const [commentText, setCommentText] = useState("");
 
-  const handleLike = () => {};
+  const handleLike = () => { };
   const handleComment = () => {
     // Show or hide the comment input
     setShowCommentInput(!showCommentInput);
   };
-  const handleShare = () => {};
+  const handleShare = () => { };
 
   return (
     <View styles={styles.container}>
       <View style={styles.horizontal}>
         <Text style={{ marginRight: 5 }}>
-          {Array.from({ length: data.quantity_star }, (v, i) => (
+          {Array.from({ length: data.star }, (v, i) => (
             <Ionicons key={i} name="star" color={"gold"}></Ionicons>
           ))}
         </Text>
-        <Text style={{ fontWeight: "bold" }}>{data.rank}</Text>
+        <Text style={{ fontWeight: "bold" }}>{getFeedbackText(data.star)}</Text>
       </View>
       <View style={{}}>
         <Text>{data.content}</Text>
       </View>
       <View style={styles.horizontal}>
-        <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
-          {data.fullname}
-        </Text>
+        {data.fullName ?
+          <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
+            {data.fullName}
+          </Text>
+          :
+          <Text style={{ marginRight: 5, fontSize: 15, color: colors.grayLight }}>
+            Nguyễn Văn Lênh
+          </Text>
+        }
+
         <Text
           style={{
             backgroundColor: colors.borderGray,

@@ -30,7 +30,10 @@ import HistoryViewProduct from "./pages/HistoryViewProduct";
 import { AppState } from "react-native";
 
 import { addHistory } from "./redux/slices/HistoryView";
-
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import MessageAdminScreen from "./pages/MessageAdminScreen";
+import { SpeechVoice } from "./pages/SpeechVoice";
 function App() {
   const Stack = createNativeStackNavigator();
 
@@ -40,9 +43,6 @@ function App() {
       try {
         // Gọi hàm để lấy dữ liệu giỏ hàng từ AsyncStorage
         const carts = await getCartFromAsyncStorage();
-        // Gọi hàm để lấy dữ liệu sản phẩm đã xem từ AsyncStorage
-        const history = await getHistoryFromAsyncStorage();
-
 
         // Nếu có dữ liệu, dispatch action để cập nhật giỏ hàng trong Redux
         if (carts) {
@@ -50,11 +50,11 @@ function App() {
             store.dispatch(addCart(item));
           });
         }
-        if (history) {
-          history.forEach((item) => {
-            store.dispatch(addHistory(item));
-          });
-        }
+        // if (history) {
+        //   history.forEach((item) => {
+        //     store.dispatch(addHistory(item));
+        //   });
+        // }
 
         // Gọi hàm để lấy dữ liệu địa chỉ từ AsyncStorage
         const storedInfoAddress = await getInfoAddressFromAsyncStorage();
@@ -65,8 +65,6 @@ function App() {
 
         const storedInfoPayment = await getMethodPaymentFromAsyncStorage()
         if (storedInfoPayment) store.dispatch(setSelectedPayment(storedInfoPayment))
-
-
         // Lắng nghe sự kiện AppState để xử lý khi ứng dụng chuyển sang trạng thái background hoặc inactive
         const handleAppStateChange = (nextAppState) => {
           if (nextAppState.match(/inactive|background/)) {
@@ -77,13 +75,10 @@ function App() {
 
             // Lưu giỏ hàng xuống AsyncStorage
             saveCartToAsyncStorage(cartRedux);
-            const historyRedux = store.getState().historys;
-            // Lưu giỏ hàng xuống AsyncStorage
-
-            saveHistoryViewToAsyncStorage(historyRedux)
 
           }
         };
+
 
         // Đăng ký lắng nghe sự kiện
         AppState.addEventListener('change', handleAppStateChange);
@@ -92,6 +87,7 @@ function App() {
         return () => {
           AppState.removeEventListener('change', handleAppStateChange);
         };
+
       } catch (error) {
         console.error(error);
       }
@@ -99,12 +95,13 @@ function App() {
 
     fetchData();
   }, []);
+
   return (
     <Provider store={store}>
       <NavigationContainer>
-        <Stack.Navigator
-        // initialRouteName="QRCode"
-        >
+
+        <Stack.Navigator initialRouteName="Login">
+
           <Stack.Screen
             name="Main"
             component={MainContainer}
@@ -201,6 +198,19 @@ function App() {
               headerShown: false,
             }}
           />
+          <Stack.Screen
+            name="SpeechVoice"
+            component={SpeechVoice}
+            options={{
+              title: "Tìm kiếm bằng giọng nói",
+              headerTitleAlign: "center",
+              headerStyle: {
+                backgroundColor: colors.blueRoot,
+              },
+              headerTintColor: "white",
+            }}
+          />
+
           <Stack.Screen name="HistoryViewProduct" component={HistoryViewProduct}
             options={{
               title: 'Sản phẩm đã xem',
@@ -228,11 +238,27 @@ function App() {
               },
               headerTintColor: 'white',
             }} />
-
-
+          <Stack.Screen name="Login" component={Login}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="Register" component={Register}
+            options={{
+              headerShown: false,
+            }} />
+          <Stack.Screen name="MessageAdmin" component={MessageAdminScreen}
+            options={{
+              title: 'Tin nhắn',
+              headerTitleAlign: 'center',
+              headerStyle: {
+                backgroundColor: colors.blueRoot,
+              },
+              headerTintColor: 'white',
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+    </Provider >
   );
 
 }

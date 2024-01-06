@@ -1,3 +1,5 @@
+import { Alert } from "react-native";
+
 // Hàm để lấy dữ liệu từ API
 export async function fetchDataMethodGET(apiUrl) {
     try {
@@ -35,14 +37,10 @@ export async function createOrder(apiUrl, order_data) {
             body: JSON.stringify(order_data),
         });
 
-        // TH: Không tạo được đơn hàng
-        if (response.status !== 201)
-            throw new Error(`Failed to create order. Status: ${response.status}`)
-
         return await response.json()
     } catch (e) {
 
-        // console.error(e)
+        Alert.alert('Thông báo', 'Đặt hàng thất bại')
         return null;
     }
 }

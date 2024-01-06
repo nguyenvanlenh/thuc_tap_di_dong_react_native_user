@@ -1,23 +1,23 @@
 import React from "react";
-import {Image, StyleSheet, TextInput, TouchableOpacity, View} from "react-native";
-import {Dimensions} from "react-native";
-export default function BannerGrid(){
+import { Image, StyleSheet, TextInput, TouchableOpacity, View } from "react-native";
+import { Dimensions } from "react-native";
+export default function BannerGrid() {
     const imageList = [
-        require('../../assets/BannerSquare/1.jpeg'),
-        require('../../assets/BannerSquare/2.jpeg'),
-        require('../../assets/BannerSquare/3.jpeg'),
-        require('../../assets/BannerSquare/4.jpeg'),
-        require('../../assets/BannerSquare/5.jpeg'),
-        require('../../assets/BannerSquare/6.jpeg'),
-        require('../../assets/BannerSquare/7.jpeg'),
-        require('../../assets/BannerSquare/8.jpeg'),
-        require('../../assets/BannerSquare/9.jpeg'),
-        require('../../assets/BannerSquare/10.jpeg'),
+        require('../../assets/BannerSquare/1.jpg'),
+        require('../../assets/BannerSquare/2.jpg'),
+        require('../../assets/BannerSquare/3.jpg'),
+        require('../../assets/BannerSquare/4.jpg'),
+        require('../../assets/BannerSquare/5.jpg'),
+        require('../../assets/BannerSquare/6.jpg'),
+        require('../../assets/BannerSquare/7.jpg'),
+        require('../../assets/BannerSquare/8.jpg'),
+        require('../../assets/BannerSquare/9.jpg'),
+        require('../../assets/BannerSquare/10.jpg'),
     ];
     const randomImages = getRandomImages(imageList, 6);
-    return(
+    return (
         <View style={styles.container}>
-            {randomImages.map((image, index) =>(
+            {randomImages.map((image, index) => (
                 <View key={index}>
                     <TouchableOpacity style={styles.element}>
                         <Image

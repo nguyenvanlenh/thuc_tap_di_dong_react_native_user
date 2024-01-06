@@ -1,7 +1,8 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text, Image, TextInput, ScrollView, ProgressBarAndroid, TouchableOpacity, StyleSheet, Dimensions, FlatList } from 'react-native';
+import { API_GET_PATHS } from '../services/PathApi';
 
 const Search = () => {
     const navigation = useNavigation();
@@ -10,98 +11,106 @@ const Search = () => {
     // gọi api để lấy dữ liệu
     const fetchData = async () => {
         try {
-        
-          const response = await fetch(
-            "http://tmt020202ccna-001-site1.atempurl.com/api/products/ds-san-pham?name="+
-            `${searchQuery}` +"&quantity=4" 
-             
-          );
-         
-          const jsonData = await response.json();
-         
-          // set data bằng dữ liệu lấy được
-          setData(jsonData.data || []);
+            const response = await fetch(
+                API_GET_PATHS.tim_kiem_san_pham +
+                `${searchQuery}` + "&size=4"
+            );
+
+            const jsonData = await response.json();
+
+            // set data bằng dữ liệu lấy được
+            setData(jsonData.data || []);
         } catch (error) {
-          console.error("Error fetching data:", error);
-        } 
-      };
-    
-     
-      const handleInputChange = (text) => {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+
+    const handleInputChange = (text) => {
         setSearchQuery(text);
-      };
-    
-      useEffect(() => {
+    };
+
+    useEffect(() => {
         // Gọi hàm tìm kiếm mỗi khi giá trị của input thay đổi
         fetchData()
-       
-      }, [searchQuery]);
+
+    }, [searchQuery]);
     const handleSearch = () => {
         // Thực hiện xử lý tìm kiếm và truyền dữ liệu đến trang tìm kiếm
         navigation.navigate('SearchResult', { query: searchQuery });
     };
     const renderProduct = ({ item }) => (
-        
+
         <Text onPress={() => onItemSelected(item)}>{item.name_product}</Text>
-      );
+    );
     return (
 
         <View style={styles.container}>
-          
+
             <View style={styles.headerSearch}>
                 <Ionicons style={styles.icon_back} name="arrow-back-outline" size={26} color={'#aaa'} onPress={() => navigation.goBack()} />
                 <TextInput
-                    placeholder="Giao nhanh 2H & đúng khung giờ"
+                    placeholder="Bạn muốn tìm gì!!"
                     style={styles.searchTextInput}
                     editable={true}
                     onChangeText={handleInputChange}
                     onSubmitEditing={handleSearch}
                 />
+                <Ionicons name="mic-outline" size={26} color={'#aaa'} onPress={() =>
+                    navigation.navigate('SpeechVoice')}></Ionicons>
             </View>
-            <View>{ searchQuery !== '' ? (data.map((item) => (
-            <TouchableOpacity
-              style={styles.productItem}
-              key={item.id_product}
-              onPress={() =>
-                navigation.navigate("SearchResult", {
-                  query: item.name_product,
-                })
-              }
-            >
-                
-              <Text style={styles.placeholder_search}><Ionicons  name="search-circle-outline" size={16} color={'#aaa'}  /> {item.name_product}</Text>
-              <Text style={styles.line}></Text>
-            </TouchableOpacity>
-          ))): <Text></Text>}</View>
-            
+            <View>
+                {Array.isArray(data) && data.length > 0 ? (
+                    data.map((item) => (
+                        <TouchableOpacity
+                            style={styles.productItem}
+                            key={item.id_product}
+                            onPress={() =>
+                                navigation.navigate("SearchResult", {
+                                    query: item.name_product,
+                                })
+                            }
+                        >
+                            <Text style={styles.placeholder_search}>
+                                <Ionicons name="search-circle-outline" size={16} color={'#aaa'} /> {item.name_product}
+                            </Text>
+                            <Text style={styles.line}></Text>
+                        </TouchableOpacity>
+                    ))
+                ) : (
+                    <Text>No data available</Text>
+                )}
+            </View>
+
+
             <View style={styles.suggest1}>
-                <Text>Coupon Đến 150K</Text>
+                <Text>Áo đội tuyển Việt Nam</Text>
                 <Text style={styles.sale}>HÀNG HIỆU SALE 50%</Text>
             </View>
             <View style={styles.comp}>
                 <View style={styles.trending}>
-                    <Ionicons style={styles.icon_tren} name="trending-up-outline"  />
+                    <Ionicons style={styles.icon_tren} name="trending-up-outline" />
                     <Text style={styles.text_tren}>Tìm kiếm phổ biến</Text>
                 </View>
                 <View style={styles.list_tren}>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/4b11243d47b420d33f773d005be5b5ab.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Áo vãi mềm</Text>
                     </View>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/898f24b5580b36b234347da62a87d77b.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Áo thể thao chính hãng</Text>
                     </View>
                     <View style={styles.item_tren}>
-                        <Image style={styles.item_tren_image} source={{ uri: 'https://salt.tikicdn.com/ts/upload/0e/07/78/ee828743c9afa9792cf20d75995e134e.png' }}
+                        <Image style={styles.item_tren_image} source={{ uri: 'https://pubcdn.ivymoda.com/files/news/2023/05/16/8f906c111b4f829902dc0e9dde16d492.jpg' }}
                         ></Image>
-                        <Text style={styles.item_tren_text}>Colagen</Text>
+                        <Text style={styles.item_tren_text}>Bộ đồ bóng đá</Text>
                     </View>
                 </View>
             </View>
-            <View style={styles.catogary}>
+            {/* <View style={styles.catogary}>
                 <Text style={styles.title_catogary}>Danh mục nổi bật</Text>
                 <View style={styles.list_catogary}>
                     <View style={styles.item_catogary}>
@@ -130,7 +139,7 @@ const Search = () => {
                         <Text style={styles.name_catogary}>Giày nike</Text>
                     </View>
                 </View>
-            </View>
+            </View> */}
         </View>
 
     );
@@ -247,8 +256,9 @@ const styles = StyleSheet.create({
         fontSize: 30
     },
     headerSearch: {
-        paddingVertical: 10,
-        marginTop: 30,
+        alignItems: "center",
+        height: 60,
+        marginTop: 20,
         marginVertical: 0,
         flexDirection: 'row',
         backgroundColor: '#fff'
@@ -256,24 +266,25 @@ const styles = StyleSheet.create({
     comp: {
         backgroundColor: '#fff'
     },
-      searchTextInput: {
+    searchTextInput: {
         borderWidth: 0,
-        height: 36,
+        paddingVertical: 8,
         margin: 0,
         marginLeft: 8,
         // outlineWidth: 0, // Tương đương với outline: 0px;
-        width: '100%',
+        width: "80%",
         padding: 0,
-        fontWeight: '400', // Tương đương với font-weight: 400;
+        fontWeight: "400", // Tương đương với font-weight: 400;
         fontSize: 14,
-        lineHeight: 1.5, // Tương đương với line-height: 150%;
+        color: '#AAAAAA'
+
     },
-    placeholder_search:{
-      paddingHorizontal: 20,
-      paddingVertical: 10,
-      backgroundColor: '#fff'
+    placeholder_search: {
+        paddingHorizontal: 20,
+        paddingVertical: 10,
+        backgroundColor: '#fff'
     },
-    line:{
+    line: {
         height: 1,
         backgroundColor: '#000'
     }

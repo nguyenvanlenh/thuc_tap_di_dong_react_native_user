@@ -1,28 +1,40 @@
 
-export const BASE_URL = 'http://tmt020202ccna-001-site1.atempurl.com'
+export const BASE_URL = 'https://okay-town-production.up.railway.app'
 
 export const API_GET_PATHS = {
-    lay_ds_giay_moi: `${BASE_URL}/api/product-shoes/ds-giay-moi?`,
-    lay_ds_giay_hot: `${BASE_URL}/api/product-shoes/ds-giay-hot?`,
-    lay_ds_giay_khuyen_mai: `${BASE_URL}/api/product-shoes/ds-giay-khuyen_mai?`,
+    lay_ds_ao: `${BASE_URL}/api/products/`,
+    lay_ds_ao_all: `${BASE_URL}/api/products`,
 
-    lay_ds_giay_nike_nam: `${BASE_URL}/api/product-shoes/ds-giay-nike-nam?`,
-    lay_ds_giay_nike_nu: `${BASE_URL}/api/product-shoes/ds-giay-nike-nu?`,
+    lay_ds_do_nike_nam: `${BASE_URL}/api/products/ds-ao-da-banh-nike-nam?`,
+    lay_ds_do_nike_nu: `${BASE_URL}/api/products/ds-ao-da-banh-nike-nu?`,
 
-    lay_ds_giay_adidas_nam: `${BASE_URL}/api/product-shoes/ds-giay-adidas-nam?`,
-    lay_ds_giay_adidas_nu: `${BASE_URL}/api/product-shoes/ds-giay-adidas-nu?`,
+    lay_ds_do_adidas_nam: `${BASE_URL}/api/products/ds-ao-da-banh-adidas-nam?`,
+    lay_ds_do_adidas_nu: `${BASE_URL}/api/products/ds-ao-da-banh-adidas-nu?`,
 
-    lay_ds_giay_jordan_nam: `${BASE_URL}/api/product-shoes/ds-giay-jordan-nam?`,
-    lay_ds_giay_jordan_nu: `${BASE_URL}/api/product-shoes/ds-giay-jordan-nu?`,
+    lay_ds_do_puma_nam: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nam?`,
+    lay_ds_do_puma_nu: `${BASE_URL}/api/products/ds-ao-da-banh-puma-nu?`,
+
+    lay_ds_loc: `${BASE_URL}/api/products/filter?`,
+    // --------------------
 
     lay_ds_san_pham_theo_ten: `${BASE_URL}/api/products/ds-san-pham?`,
-    lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product?`,
+    lay_thong_tin_san_pham: `${BASE_URL}/api/products/infor-product/`,
+    tim_kiem_san_pham: `${BASE_URL}/api/products/search?name=`,
+    danh_gia_san_pham: `${BASE_URL}/api/comment`,
 
-    chi_tiet_don_hang: `${BASE_URL}/api/order/infor-order?`,
-    lich_su_mua_hang: `${BASE_URL}/api/history/lich-su-mua-hang?`
+    chi_tiet_don_hang: `${BASE_URL}/api/order-details/`,
+    lich_su_mua_hang: `${BASE_URL}/api/orders/all`,
+    lich_su_mua_hang_phone: `${BASE_URL}/api/orders?phoneNumbers=`,
+    lich_su_mua_hang_status: `${BASE_URL}/api/orders/status?status=`,
+    lay_don_hang: `${BASE_URL}/api/orders/`,
 }
 
 
 export const API_POST_PATHS = {
-    tao_don_hang: `${BASE_URL}/api/order/create-order`
+    tao_don_hang: `${BASE_URL}/api/create-order`
+}
+
+export const API_AUTH = {
+    login: `${BASE_URL}/api/authentication/login-user`,
+    register: `${BASE_URL}/api/register`
 }

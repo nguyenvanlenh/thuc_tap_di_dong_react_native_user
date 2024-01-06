@@ -8,39 +8,66 @@ import {
 } from "react-native";
 import { colors } from "../theme";
 import Ionicons from "react-native-vector-icons/Ionicons";
-
+import { useRoute } from "@react-navigation/native";
+import { getFeedbackText } from "../utils/Utils";
+import { API_GET_PATHS } from "../services/PathApi";
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from 'react-redux';
 const ProductReview = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
-
+  const router = useRoute();
+  const [user, setUser] = useState(1)
+  const navigation = useNavigation();
+  const { id_product } = router.params;
+  const userid = useSelector(state => state.user)
   const handleStarPress = (selectedRating) => {
     setRating(selectedRating);
   };
 
-  const getFeedbackText = () => {
-    switch (rating) {
-      case 1:
-        return "Tệ";
-      case 2:
-        return "Không hài lòng";
-      case 3:
-        return "Bình thường";
-      case 4:
-        return "Hài lòng";
-      case 5:
-        return "Cực kỳ hài lòng";
-      default:
-        return "";
-    }
-  };
+
 
   const handleSendComment = () => {
-    // Handle sending the review (rating and comment)
-    // ...
+    // Check if the comment is empty
+    if (!comment.trim()) {
+      alert("Bạn chưa nhập nội dung");
+      return;
+    }
+
+    const commentData = {
+      id_user: userid ? userid.user.id : 1,
+      id_product: id_product,
+      star: rating,
+      content: comment,
+    };
+
+    fetch(API_GET_PATHS.danh_gia_san_pham, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(commentData),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        navigation.goBack();
+        // Xử lý khi nhận được phản hồi thành công từ server
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // Xử lý khi gặp lỗi trong quá trình gửi request
+      });
 
     // Clear the comment input after sending
-    setComment("");
+    setComment('');
   };
+
 
   return (
     <View style={styles.container}>
@@ -62,7 +89,7 @@ const ProductReview = () => {
       </View>
 
       {/* Feedback Text */}
-      <Text style={styles.feedbackText}>{getFeedbackText()}</Text>
+      <Text style={styles.feedbackText}>{getFeedbackText(rating)}</Text>
 
       {/* Comment Input */}
       <TextInput
