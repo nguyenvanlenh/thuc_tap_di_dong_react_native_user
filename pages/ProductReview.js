@@ -11,15 +11,16 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import { useRoute } from "@react-navigation/native";
 import { getFeedbackText } from "../utils/Utils";
 import { API_GET_PATHS } from "../services/PathApi";
-
+import { useNavigation } from "@react-navigation/native";
+import { useSelector } from 'react-redux';
 const ProductReview = () => {
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
   const router = useRoute();
   const [user, setUser] = useState(1)
-
+  const navigation = useNavigation();
   const { id_product } = router.params;
-
+  const userid = useSelector(state => state.user)
   const handleStarPress = (selectedRating) => {
     setRating(selectedRating);
   };
@@ -27,9 +28,14 @@ const ProductReview = () => {
 
 
   const handleSendComment = () => {
+    // Check if the comment is empty
+    if (!comment.trim()) {
+      alert("Bạn chưa nhập nội dung");
+      return;
+    }
 
     const commentData = {
-      id_user: user ? user : 1,
+      id_user: userid ? userid.user.id : 1,
       id_product: id_product,
       star: rating,
       content: comment,
@@ -50,7 +56,7 @@ const ProductReview = () => {
       })
       .then(data => {
         console.log('Success:', data);
-
+        navigation.goBack();
         // Xử lý khi nhận được phản hồi thành công từ server
       })
       .catch(error => {
@@ -61,6 +67,7 @@ const ProductReview = () => {
     // Clear the comment input after sending
     setComment('');
   };
+
 
   return (
     <View style={styles.container}>
