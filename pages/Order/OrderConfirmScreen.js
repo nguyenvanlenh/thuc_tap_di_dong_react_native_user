@@ -47,7 +47,7 @@ export default function OrderConfirmScreen() {
         order_value: value_order(),
         list_order_detail: order_items.map((item) => ({
             id_product: item.id,
-            name_size: item.size,
+            nameSize: item.size,
             quantity: item.quantity,
             price: item.price
         })),
