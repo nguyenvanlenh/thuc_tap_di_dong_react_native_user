@@ -11,69 +11,50 @@ import VoteScreen from '../../components/VoteScreen';
 import { colors } from '../../theme';
 import SelectionAttributeBrand from "../../components/Category/SelectionAttributeBrand";
 
-const handleProductPress = () => {
-  // Gọi màn hình đánh giá khi sản phẩm được nhấn
-  navigation.navigate('VoteScreen');
-};
 const CategoryScreen = () => {
-
-
-  const [activeButtonBrand, setActiveButtonBrand] = useState(null);
-  const handleActiveButtonChangeBrand = (newActiveButton) => {
-    setActiveButtonBrand(newActiveButton);
-  };
-
-  const [takeAttribute, setTakeAttribute] = useState({
-    brand: "",
-    gender: "",
-    type: "",
-  })
   const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const { categories, selectedCategory } = useSelector(categorySelector);
   const [leftData, setLeftData] = useState([]);
-  const [loading, setLoading] = useState(false);
   const [numColumns, setNumColumns] = useState(2);
   const [currentPage, setCurrentPage] = useState(1);
   const [pressedCategory, setPressedCategory] = useState("Đồ Nike Nam");
-
   const [modalVisible, setModalVisible] = useState(false);
-
   const [isReset, setIsReset] = useState(false);
-  const getData = (name, value) => {
-    // setTakeAttribute({brand, gender, type})
-    switch (name) {
-      case "Thương hiệu":
-        setTakeAttribute(prevState => ({
-          ...prevState,
-          brand: value
-        }));
-        break;
-      case "Giới tính":
-        setTakeAttribute(prevState => ({
-          ...prevState,
-          gender: value
-        }));
-        break;
-      case "Thể loại":
-        setTakeAttribute(prevState => ({
-          ...prevState,
-          type: value
-        }));
-        break;
-    }
-  }
-  const handleReset = () => {
-    setIsReset(true)
+
+  const handleCategoryPress = (category) => {
+    dispatch(selectCategory(category));
+    setCurrentPage(1);
+    setLeftData([]);
+    setPressedCategory(category);
   };
-  useEffect(() => {
-    setIsReset(false)
-    setTakeAttribute({
-      brand: "",
-      gender: "",
-      type: "",
-    })
-  }, [isReset])
+  const handleEndReached = () => {
+    setCurrentPage((prevPage) => prevPage + 1);
+  };
+  const renderItem = ({ item }) => (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ProductDetail", {
+          productId: item.id_product,
+        });
+      }}
+      style={[
+        styles.productTab,
+        styles.categoryItem,
+        pressedCategory === item.name_product && styles.buttonPressed,
+      ]}
+    >
+      {item.list_image && item.list_image.length > 0 && (
+        <Image style={styles.imageProduct} source={{ uri: `${item.list_image[0].path_image}` }} />
+      )}
+      <Text style={styles.productTabText}>{item.name_product.substring(0, 13)}..</Text>
+      <VoteScreen starDefault={item.star_review} ></VoteScreen>
+      <Text style={styles.productTabText}>Giá: {formatMoney(item.listed_price)}</Text>
+    </TouchableOpacity>
+  );
+
+
 
   const dataAll = [
     {
@@ -100,9 +81,64 @@ const CategoryScreen = () => {
         { id: 4, label: "ÁO FAN" },
       ]
     },];
+  const [takeAttribute, setTakeAttribute] = useState({
+    brand: "",
+    gender: "",
+    type: "",
+  })
+
+  const getData = (name, value) => {
+    // setTakeAttribute({brand, gender, type})
+    switch (name) {
+      case "Thương hiệu":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          brand: value
+        }));
+        break;
+      case "Giới tính":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          gender: value
+        }));
+        break;
+      case "Thể loại":
+        setTakeAttribute(prevState => ({
+          ...prevState,
+          type: value
+        }));
+        break;
+    }
+  }
+
+  const handleReset = () => {
+    setIsReset(true)
+  };
+  useEffect(() => {
+    setIsReset(false)
+    setTakeAttribute({
+      brand: "",
+      gender: "",
+      type: "",
+    })
+  }, [isReset])
+
+  const handleDataUseFetch = async () => {
+    try {
+      const response = await fetch(API_GET_PATHS.lay_ds_loc +
+          "brand=" + takeAttribute.brand +
+          "&sex=" + takeAttribute.gender +
+          "&type=" + takeAttribute.type +
+          "&size=15");
+      const newData = await response.json();
+      setLeftData(newData.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+    setModalVisible(false);
+  }
   useEffect(() => {
     const getProducts = async (apiEndpoint) => {
-      setLoading(true);
       try {
         const response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
         const responseData = await response.json();
@@ -111,10 +147,8 @@ const CategoryScreen = () => {
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false);
       }
     };
-
     const fetchData = () => {
       switch (selectedCategory) {
         case 'Đồ Puma Nữ':
@@ -140,37 +174,31 @@ const CategoryScreen = () => {
           break;
       }
     };
-
     fetchData();
   }, [selectedCategory]);
 
   useEffect(() => {
     const getProducts = async (apiEndpoint) => {
-      setLoading(true);
       try {
         let response;
         if (takeAttribute.gender != "" || takeAttribute.brand != "" || takeAttribute.type != "") {
           response = await fetch(API_GET_PATHS.lay_ds_loc +
-            "brand=" + takeAttribute.brand +
-            "&sex=" + takeAttribute.gender +
-            "&type=" + takeAttribute.type +
-            "&size=15" +
-            "&page=" + currentPage
+              "brand=" + takeAttribute.brand +
+              "&sex=" + takeAttribute.gender +
+              "&type=" + takeAttribute.type +
+              "&size=15" +
+              "&page=" + currentPage
           );
-
         } else {
           response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
         }
         const responseData = await response.json();
-
         setLeftData((prevData) => [...prevData, ...responseData.data]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
-        setLoading(false);
       }
     };
-
     const fetchData = () => {
       switch (selectedCategory) {
         case 'Đồ Puma Nữ':
@@ -199,56 +227,6 @@ const CategoryScreen = () => {
     fetchData()
   }, [currentPage])
 
-  const handleCategoryPress = (category) => {
-    dispatch(selectCategory(category));
-    setCurrentPage(1);
-    setLeftData([]);
-    setPressedCategory(category);
-  };
-
-  const handleEndReached = () => {
-    setCurrentPage((prevPage) => prevPage + 1);
-  };
-
-  const renderItem = ({ item }) => (
-    <TouchableOpacity
-      onPress={() => {
-        navigation.navigate("ProductDetail", {
-          productId: item.id_product,
-        });
-      }}
-      style={[
-        styles.productTab,
-        styles.categoryItem,
-        pressedCategory === item.name_product && styles.buttonPressed,
-      ]}
-    >
-      {item.list_image && item.list_image.length > 0 && (
-        <Image style={styles.imageProduct} source={{ uri: `${item.list_image[0].path_image}` }} />
-      )}
-      <Text style={styles.productTabText}>{item.name_product.substring(0, 13)}..</Text>
-      <VoteScreen starDefault={item.star_review} ></VoteScreen>
-      <Text style={styles.productTabText}>Giá: {formatMoney(item.listed_price)}</Text>
-    </TouchableOpacity>
-  );
-
-  const handleDataUseFetch = async () => {
-
-    try {
-      setLoading(true);
-      const response = await fetch(API_GET_PATHS.lay_ds_loc +
-        "brand=" + takeAttribute.brand +
-        "&sex=" + takeAttribute.gender +
-        "&type=" + takeAttribute.type +
-        "&size=15");
-      const newData = await response.json();
-      setLeftData(newData.data);
-
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-    setModalVisible(false);
-  }
   return (
     <View style={styles.categoryMain}>
       <View style={styles.header}>
@@ -330,7 +308,6 @@ const CategoryScreen = () => {
               <SelectionAttributeBrand
                 key={index}
                 data={i}
-                onActiveButtonChange={handleActiveButtonChangeBrand}
                 reset={isReset}
                 getData={getData}
               />
