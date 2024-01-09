@@ -155,7 +155,7 @@ const OrderDetailsScreen = ({ route }) => {
                   </TouchableOpacity>
 
                   {
-                    data.status == 4 &&
+                    data.status == 3 &&
                     <TouchableOpacity
                       onPress={() =>
                         navigation.navigate("ProductReview", { id_product: item.productDTO.id_product })}
@@ -166,9 +166,7 @@ const OrderDetailsScreen = ({ route }) => {
                         padding: 10,
                         backgroundColor: colors.blueRoot,
                         borderRadius: 10
-
                       }}
-
                     >
                       <Text style={{
                         color: colors.white, alignItems: "center",
@@ -183,7 +181,6 @@ const OrderDetailsScreen = ({ route }) => {
           <View style={styles.hr} />
           <TouchableOpacity style={styles.btn} onPress={() => navigation.goBack()}>
             <Text style={styles.btnText}>
-
               Back to orders
             </Text>
           </TouchableOpacity>

@@ -302,7 +302,7 @@ export const ProducDetail = ({ navigation }) => {
                   </Text>
                 </Text>
               </View>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 onPress={() =>
                   navigation.navigate("ProductReview", { id_product: productData.id_product })}
                 style={{
@@ -313,7 +313,7 @@ export const ProducDetail = ({ navigation }) => {
                 }}
               >
                 <Text>Đánh giá</Text>
-              </TouchableOpacity>
+              </TouchableOpacity> */}
               <View>
                 {listComment
                   ? listComment.slice(0, visibleComments).map((e, i) => {
