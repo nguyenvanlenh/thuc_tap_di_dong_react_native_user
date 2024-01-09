@@ -126,10 +126,10 @@ const CategoryScreen = () => {
   const handleDataUseFetch = async () => {
     try {
       const response = await fetch(API_GET_PATHS.lay_ds_loc +
-          "brand=" + takeAttribute.brand +
-          "&sex=" + takeAttribute.gender +
-          "&type=" + takeAttribute.type +
-          "&size=15");
+        "brand=" + takeAttribute.brand +
+        "&sex=" + takeAttribute.gender +
+        "&type=" + takeAttribute.type +
+        "&size=15");
       const newData = await response.json();
       setLeftData(newData.data);
     } catch (error) {
@@ -183,14 +183,14 @@ const CategoryScreen = () => {
         let response;
         if (takeAttribute.gender != "" || takeAttribute.brand != "" || takeAttribute.type != "") {
           response = await fetch(API_GET_PATHS.lay_ds_loc +
-              "brand=" + takeAttribute.brand +
-              "&sex=" + takeAttribute.gender +
-              "&type=" + takeAttribute.type +
-              "&size=15" +
-              "&page=" + currentPage
+            "brand=" + takeAttribute.brand +
+            "&sex=" + takeAttribute.gender +
+            "&type=" + takeAttribute.type +
+            "&size=15" +
+            "&page=" + currentPage
           );
         } else {
-          response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=15`);
+          response = await fetch(`${apiEndpoint}page=${currentPage}&pageSize=3`);
         }
         const responseData = await response.json();
         setLeftData((prevData) => [...prevData, ...responseData.data]);
