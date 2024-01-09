@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {ScrollView, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 
-export default function SelectionAttributeBrand({data, onActiveButtonChange, reset, getData}){
+export default function SelectionAttributeBrand({data, reset, getData}){
     const [activeButton, setActiveButton] = useState(null);
 
     useEffect(() =>{
@@ -13,7 +13,6 @@ export default function SelectionAttributeBrand({data, onActiveButtonChange, res
     const handlePress = (buttonId) => {
         getData(data.title, buttonId);
         setActiveButton(buttonId);
-        onActiveButtonChange(buttonId);
     };
     return(
         <View style={styles.container}>
